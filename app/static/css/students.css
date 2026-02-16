@@ -1,0 +1,67 @@
+/* students.css — тёмный стиль таблицы */
+
+.students-container {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.table-wrapper {
+    background: rgba(30, 30, 46, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: rgba(55, 65, 81, 0.5);
+}
+
+th {
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #cbd5e1;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.2s;
+}
+
+tbody tr:hover {
+    background: rgba(55, 65, 81, 0.3);
+}
+
+td {
+    padding: 1.25rem 1.5rem;
+    font-size: 0.95rem;
+    color: #e2e8f0;
+}
+
+.empty-state {
+    padding: 6rem 2rem;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 1.125rem;
+    font-style: italic;
+}

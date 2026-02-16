@@ -1,4 +1,24 @@
-/* login.css — тёмный glassmorphism */
+/* static/css/confirm.css — зелёный стиль, как регистрация */
+
+.min-h-screen {
+    min-height: 100vh;
+}
+
+.flex {
+    display: flex;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.bg-gray-950 {
+    background-color: #0f0f17;
+}
 
 .auth-box {
     width: 100%;
@@ -19,8 +39,8 @@
     font-weight: 700;
     margin-bottom: 0.5rem;
     color: #f1f5f9;
-    background: linear-gradient(to right, #a78bfa, #c084fc);
-    background-clip: text;           /* стандартное свойство */
+    background: linear-gradient(to right, #34d399, #10b981);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -42,43 +62,34 @@
     font-size: 0.875rem;
     font-weight: 500;
     color: #cbd5e1;
+    text-align: center;
 }
 
 .form-group input {
     width: 100%;
-    padding: 0.875rem 1rem;
+    padding: 1rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 0.875rem;
-    font-size: 1rem;
+    font-size: 2rem;
+    text-align: center;
+    letter-spacing: 1em;
     background: rgba(255, 255, 255, 0.05);
     color: #f1f5f9;
     transition: all 0.3s ease;
+    font-family: monospace;
 }
 
 .form-group input:focus {
-    border-color: #a78bfa;
-    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2);
+    border-color: #34d399;
+    box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.2);
     outline: none;
     background: rgba(255, 255, 255, 0.08);
-}
-
-.remember {
-    display: flex;
-    align-items: center;
-    margin: 1rem 0 1.5rem;
-    font-size: 0.875rem;
-    color: #cbd5e1;
-}
-
-.remember input {
-    margin-right: 0.75rem;
-    accent-color: #a78bfa;
 }
 
 .btn-submit {
     width: 100%;
     padding: 1rem;
-    background: linear-gradient(135deg, #7c3aed, #a78bfa);
+    background: linear-gradient(135deg, #10b981, #34d399);
     color: white;
     font-weight: 600;
     font-size: 1rem;
@@ -86,13 +97,13 @@
     border-radius: 0.875rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 10px 25px rgba(124, 58, 237, 0.3);
+    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
 }
 
 .btn-submit:hover {
     transform: translateY(-2px);
-    box-shadow: 0 15px 35px rgba(124, 58, 237, 0.5);
-    background: linear-gradient(135deg, #6d28d9, #9333ea);
+    box-shadow: 0 15px 35px rgba(16, 185, 129, 0.5);
+    background: linear-gradient(135deg, #059669, #10b981);
 }
 
 .switch {
@@ -103,13 +114,25 @@
 }
 
 .switch a {
-    color: #a78bfa;
+    color: #34d399;
     font-weight: 600;
     text-decoration: none;
     transition: color 0.3s;
 }
 
 .switch a:hover {
-    color: #c084fc;
+    color: #6ee7b7;
     text-decoration: underline;
+}
+
+/* Ошибки */
+.error-block {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #f87171;
+    padding: 1rem;
+    border-radius: 0.875rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    text-align: center;
 }

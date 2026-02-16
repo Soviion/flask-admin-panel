@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подтверждение кода — Админ-панель УИВР</title>
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/confirm.css">
+</head>
+<body>
+    <!-- Flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-container max-w-md mx-auto mt-6 px-4">
+                {% for category, message in messages %}
+                    <div class="flash flash-{{ category }} p-4 rounded-xl mb-4 text-center shadow-sm">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="min-h-screen flex items-center justify-center bg-gray-950">
+        <div class="auth-box">
+            <h1>Подтверждение</h1>
+            <p class="subtitle">
+                Введите 6-значный код, отправленный на <strong>{{ email }}</strong>
+            </p>
+
+            <!-- Ошибки -->
+            {% if errors %}
+                <div class="error-block">
+                    {% for error in errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="POST">
+                <div class="form-group">
+                    <label for="code">Код</label>
+                    <input type="text" name="code" id="code" maxlength="6" placeholder="123456" required>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    Подтвердить
+                </button>
+            </form>
+
+            <p class="switch">
+                Не пришёл код? 
+                <a href="{{ url_for('auth.register') }}">Попробовать заново</a>
+            </p>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+</body>
+</html>

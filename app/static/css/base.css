@@ -1,4 +1,4 @@
-/* base.css — только необходимое */
+/* base.css — современный тёмный стиль */
 
 * {
     margin: 0;
@@ -7,39 +7,71 @@
 }
 
 body {
-    font-family: system-ui, -apple-system, sans-serif;
-    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #0f0f17 0%, #1a1a2e 100%);
+    color: #e2e8f0;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    color: #1f2937;
+    line-height: 1.6;
 }
 
 main {
     flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px 16px;
+    padding: 2rem 1rem;
 }
 
-footer {
-    text-align: center;
-    padding: 16px 0;
-    color: #6b7280;
-    font-size: 13px;
-    border-top: 1px solid #e5e7eb;
-    background: rgba(255, 255, 255, 0.6);
+
+/* Flash-сообщения — стекло */
+.flash-container {
+    max-width: 600px;
+    margin: 1.5rem auto;
+    padding: 0 1rem;
 }
 
 .flash {
-    max-width: 520px;
-    margin: 16px auto;
-    padding: 12px;
-    border-radius: 8px;
-    text-align: center;
-    font-size: 14px;
+    padding: 1rem 1.5rem;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    animation: fadeInUp 0.4s ease-out;
 }
 
-.flash-success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
-.flash-danger  { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+.flash-success {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border-color: rgba(52, 211, 153, 0.3);
+}
+
+.flash-danger, .flash-error {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border-color: rgba(248, 113, 113, 0.3);
+}
+
+.flash-warning {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border-color: rgba(251, 191, 36, 0.3);
+}
+
+.flash-info {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border-color: rgba(96, 165, 250, 0.3);
+}
+
+/* Анимация появления flash */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

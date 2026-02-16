@@ -1,29 +1,48 @@
-{% extends "base.html" %}
-
-{% block title %}Список студентов{% endblock %}
-
-{% block content %}
-<div class="max-w-6xl mx-auto mt-10">
-    <h1 class="text-3xl font-bold mb-6">Список студентов</h1>
-
-    <div class="bg-white shadow overflow-hidden rounded-lg">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Telegram ID</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ФИО</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Группа</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Верифицирован</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                <!-- Пока пусто, потом заполним данными из БД -->
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" colspan="5">Данные студентов будут здесь</td>
-                </tr>
-            </tbody>
-        </table>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список студентов — Админ-панель УИВР</title>
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/students.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Flash данные -->
+    <div id="flash-data" style="display:none;">
+        {{ get_flashed_messages(with_categories=true) | tojson }}
     </div>
-</div>
-{% endblock %}
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Список студентов</h1>
+            <a href="/" class="text-indigo-600 hover:text-indigo-800 font-medium">← Назад на дашборд</a>
+        </div>
+
+        <div class="bg-white shadow overflow-hidden rounded-2xl border border-gray-200">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Telegram ID</th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ФИО</th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Группа</th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Верифицирован</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <!-- Пока заглушка -->
+                    <tr>
+                        <td colspan="5" class="px-6 py-10 text-center text-gray-500 italic">
+                            Данные студентов будут здесь после подключения к БД бота
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="/static/js/flash.js"></script>
+    {% include 'footer.html' %}
+</body>
+</html>
