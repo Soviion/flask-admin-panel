@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Дашборд{% endblock %}
+
+{% block content %}
+
+    <div class="max-w-4xl mx-auto mt-10">
+        <h1 class="text-3xl font-bold mb-6">
+            Добро пожаловать, {{ current_user.full_name or current_user.email }}!
+        </h1>
+
+        <div class="bg-white p-6 rounded-lg shadow">
+            <p class="text-lg mb-4">Это админ-панель УИВР. Пока доступны:</p>
+            <ul class="list-disc pl-6 mb-6">
+                <li>Просмотр списка студентов</li>
+                <li>Управление регистрацией</li>
+                <li>Мониторинг сервера</li>
+            </ul>
+
+            <a href="{{ url_for('students.list') }}" class="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700">
+                Перейти к студентам
+            </a>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Подтверждение кода{% endblock %}
+
+{% block content %}
+
+    <div class="auth-container">
+        <h1>Подтверждение</h1>
+        <p>Введите 6-значный код, отправленный на <strong>{{ email }}</strong></p>
+
+        <form method="POST">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                {{ form.code.label }}
+                {{ form.code(placeholder="123456") }}
+            </div>
+
+            {{ form.submit(class="btn-submit") }}
+        </form>
+
+        <p>Не пришёл код? <a href="{{ url_for('auth.register') }}">Попробовать заново</a></p>
+    </div>
+
+{% endblock %}

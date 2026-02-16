@@ -7,34 +7,30 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     {% block extra_css %}{% endblock %}
 </head>
-<body class="bg-gray-100 font-sans">
-    <nav class="bg-blue-600 text-white p-4">
-        <div class="container mx-auto flex justify-between">
-            <a href="/" class="text-xl font-bold">Админ-панель УИВР</a>
-            <div>
-                {% if current_user.is_authenticated %}
-                    <span class="mr-4">Привет, {{ current_user.full_name or current_user.email }}</span>
-                    <a href="{{ url_for('auth.logout') }}" class="hover:underline">Выйти</a>
-                {% else %}
-                    <a href="{{ url_for('auth.login') }}" class="mr-4 hover:underline">Войти</a>
-                    <a href="{{ url_for('auth.register') }}" class="hover:underline">Регистрация</a>
-                {% endif %}
-            </div>
-        </div>
-    </nav>
+<body>
 
-    <div class="container mx-auto mt-8 px-4">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
+    <!-- Сообщения flash (ошибки, успехи) -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-container">
                 {% for category, message in messages %}
-                    <div class="bg-{{ 'red' if category == 'danger' else 'green' }}-100 border border-{{ 'red' if category == 'danger' else 'green' }}-400 text-{{ 'red' if category == 'danger' else 'green' }}-700 px-4 py-3 rounded mb-4">
+                    <div class="flash flash-{{ category }}">
                         {{ message }}
                     </div>
                 {% endfor %}
-            {% endif %}
-        {% endwith %}
+            </div>
+        {% endif %}
+    {% endwith %}
 
+    <!-- Основной контент страницы -->
+    <main class="main-content">
         {% block content %}{% endblock %}
-    </div>
+    </main>
+
+    <!-- Футер всегда внизу -->
+    <footer class="footer">
+        © 2026 УИВР • Яковчик Алексей Юрьевич • Все права защищены
+    </footer>
+
 </body>
 </html>

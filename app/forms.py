@@ -1,3 +1,4 @@
+# forms.py
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
@@ -14,3 +15,7 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Пароль', validators=[DataRequired(), Length(min=8)])
     password2 = PasswordField('Повторите пароль', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Зарегистрироваться')
+
+class CodeConfirmForm(FlaskForm):
+    code = StringField('Код из почты', validators=[DataRequired(), Length(min=6, max=6)])
+    submit = SubmitField('Подтвердить')

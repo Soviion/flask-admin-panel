@@ -1,0 +1,99 @@
+/* login.css */
+
+.auth-box {
+    width: 100%;
+    max-width: 540px;               /* шире по горизонтали */
+    margin: 40px auto 20px;         /* ужато по вертикали */
+    padding: 28px 24px 24px;        /* меньше паддингов */
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.auth-box h1 {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #111827;
+}
+
+.auth-box .subtitle {
+    text-align: center;
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 28px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 15px;
+    background: #f9fafb;
+}
+
+.form-group input:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+    outline: none;
+}
+
+.remember {
+    display: flex;
+    align-items: center;
+    margin: 12px 0 20px;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.remember input {
+    margin-right: 8px;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 13px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+}
+
+.switch {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.switch a {
+    color: #6366f1;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.switch a:hover {
+    color: #4f46e5;
+    text-decoration: underline;
+}
