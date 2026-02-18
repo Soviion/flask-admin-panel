@@ -1,77 +1,79 @@
-// static/js/flash.js — toast-уведомления в правом верхнем углу
+// static/js/flash.js — чистый, современный, поверх всего
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Создаём контейнер для toast (один раз)
-    let toastContainer = document.querySelector('.toast-container');
-    if (!toastContainer) {
-        toastContainer = document.createElement('div');
-        toastContainer.className = 'toast-container fixed top-6 right-6 z-50 flex flex-col gap-3 max-w-sm';
-        document.body.appendChild(toastContainer);
-    }
+    // Контейнер — всегда наверху
+    const createContainer = () => {
+        let c = document.querySelector('.flash-container');
+        if (!c) {
+            c = document.createElement('div');
+            c.className = 'flash-container fixed top-4 right-4 z-[99999] flex flex-col gap-2.5 max-w-[340px] pointer-events-none';
+            document.body.appendChild(c);
+        }
+        return c;
+    };
+    
 
-    // Функция показа одного toast
+    const container = createContainer();
+
     function showToast(category, message) {
-        const toast = document.createElement('div');
-        toast.className = `toast flash-${category} p-4 pr-12 rounded-xl shadow-2xl text-white flex items-center gap-3 backdrop-blur-md border border-opacity-30 animate-slide-in-right relative`;
 
-        // Иконки + цвет по категории
-        let bgClass = '';
+        const toast = document.createElement('div');
+        toast.className = `flash-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-white shadow-xl backdrop-blur-lg border border-opacity-20 transition-all duration-300 pointer-events-auto`;
+
+        let bg = 'bg-neutral-900/90 border-neutral-700/50';
         let icon = '';
 
         if (category === 'success') {
-            bgClass = 'bg-green-600/90 border-green-400';
-            icon = '<svg class="w-6 h-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>';
+            bg = 'bg-green-900/90 border-green-700/50';
+            icon = '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>';
         } else if (category === 'danger' || category === 'error') {
-            bgClass = 'bg-red-600/90 border-red-400';
-            icon = '<svg class="w-6 h-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';
+            bg = 'bg-red-900/90 border-red-700/50';
+            icon = '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0 3.75h.01M12 21a9 9 0 100-18 9 9 0 000 18z"/></svg>';
         } else if (category === 'warning') {
-            bgClass = 'bg-amber-600/90 border-amber-400';
-            icon = '<svg class="w-6 h-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>';
+            bg = 'bg-amber-900/90 border-amber-700/50';
+            icon = '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.008v.008H12v-.008z"/></svg>';
         } else {
-            bgClass = 'bg-indigo-600/90 border-indigo-400';
-            icon = '<svg class="w-6 h-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';
+            bg = 'bg-indigo-900/90 border-indigo-700/50';
+            icon = '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';
         }
 
-        toast.classList.add(bgClass);
+        toast.className += ' ' + bg;
+
         toast.innerHTML = `
             ${icon}
             <span class="flex-1">${message}</span>
-            <button class="absolute top-3 right-3 text-white/70 hover:text-white focus:outline-none" onclick="this.parentElement.remove()">×</button>
+            <button class="ml-1 text-white/70 hover:text-white text-xl leading-none" onclick="this.parentElement.remove()">×</button>
         `;
 
-        toastContainer.appendChild(toast);
+        container.appendChild(toast);
 
-        // Автозакрытие через 4.5 секунды
+        // Появление
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(20px)';
         setTimeout(() => {
-            toast.classList.add('opacity-0', 'translate-x-4', 'transition-all', 'duration-500');
-            setTimeout(() => toast.remove(), 500);
-        }, 4500);
+            toast.style.transition = 'all 0.35s ease-out';
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateX(0)';
+        }, 10);
+
+        // Исчезновение через 3.8 секунды
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(20px)';
+            setTimeout(() => toast.remove(), 350);
+        }, 3800);
     }
 
-    // Берём flash из hidden div
+    // Ловим flash
     const flashData = document.querySelector('#flash-data');
     if (flashData) {
         try {
             const flashes = JSON.parse(flashData.textContent || '[]');
-            flashes.forEach(([category, message]) => {
-                showToast(category, message);
-            });
+            flashes.forEach(([cat, msg]) => showToast(cat, msg));
         } catch (e) {
-            console.error('Ошибка парсинга flash:', e);
+            console.error('[FLASH] Ошибка парсинга:', e);
         }
         flashData.remove();
+    } else {
     }
-
-    // Анимация появления справа
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(100%); }
-            to   { opacity: 1; transform: translateX(0); }
-        }
-        .animate-slide-in-right {
-            animation: slideInRight 0.4s ease-out forwards;
-        }
-    `;
-    document.head.appendChild(style);
 });

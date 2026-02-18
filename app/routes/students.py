@@ -9,7 +9,7 @@ students_bp = Blueprint('students', __name__)
 @students_bp.route('/students')
 @login_required
 def list():
-    return render_template('students.html')
+    return render_template('students.html', is_students=True)
 
 @students_bp.route('/api/students')
 @login_required

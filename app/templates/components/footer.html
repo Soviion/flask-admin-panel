@@ -1,4 +1,4 @@
-<footer class="footer mt-auto py-6 text-center text-gray-400 text-sm bg-gray-900/80 backdrop-blur-md border-t border-gray-800">
+<footer class="footer mt-auto py-6 text-center text-gray-400 text-sm bg-gray-900/80 backdrop-blur-md border-t border-gray-500">
     © 2026 УИВР • <a href="https://t.me/Foggislimm" target="_blank">Яковчик Алексей Юрьевич</a> • <a href="https://soviion.github.io" target="_blank">Все права защищены</a>
 
     <style>
@@ -12,7 +12,9 @@
             font-size: 0.875rem;
             padding: 1.5rem 0;
             text-align: center;
-            margin-top: auto; /* прижимает к низу, если body flex */
+            margin-top: auto !important;
+            position: relative !important;
+            z-index: 10 !important;
         }
 
         .footer:hover {

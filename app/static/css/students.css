@@ -100,7 +100,7 @@ td {
 
 
 /* Фиксированные ширины столбцов (в процентах — чтобы влезало в экран) */
-th:nth-child(1), td:nth-child(1) { width: 2%; }  /* № */
+th:nth-child(1), td:nth-child(1) { width: 4%; }  /* № */
 th:nth-child(2), td:nth-child(2) { width: 10%; } /* Username */
 th:nth-child(3), td:nth-child(3) { width: 16%; } /* ФИО — самый большой */
      /* тут пропущено чтоб телеграм id скрыть*/

@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="/static/css/students.css">
 </head>
 <body class="bg-gray-950 text-gray-100">
-    {% set title = "База студентов" %}
     {% include "components/header.html" %}
 
     <div id="flash-data" style="display:none;">
@@ -53,28 +52,21 @@
                     </div>
                 </div>
 
-                <!-- Фильтры справа (1/4 ширины, sticky, в таком же кругляше) -->
                 <div class="filter-container">
-
 
                     <div class="filter-wrapper">
 
-                        <!-- Статистика -->
                         <div style="margin-bottom:18px;">
                             <h3 style="font-size:18px;font-weight:700;">Всего верифицированных пользователей: <a id="verified-count" style="color:var(--accent);">0</a></h3>
                         </div>
 
                         <h3>Фильтры</h3>
-
                         <div class="space-y-4">
-
-                            <!-- ФИО -->
                             <div>
                                 <label>ФИО</label>
                                 <input type="text" id="fio" class="input-filter" placeholder="Иванов Иван Иванович">
                             </div>
 
-                            <!-- Группа + Факультет -->
                             <div class="filter-row-2">
                                 <div>
                                     <label>Группа</label>
@@ -95,7 +87,6 @@
                                 </div>
                             </div>
 
-                            <!-- Форма + Стипендия -->
                             <div class="filter-row-2">
                                 <div>
                                     <label>Форма обучения</label>
@@ -117,7 +108,6 @@
                             </div>
 
                             <div class="filter-row-2">
-                                <!-- Телефон -->
                                 <div>
                                     <label>Телефон</label>
                                     <input type="text" id="phone" class="input-filter" placeholder="+375XXXXXXXXX">
@@ -145,18 +135,12 @@
                                     Очистить
                                 </button>   
                             </div>
-                            
-
-                            
 
                         </div>
                     </div>
-
-
-
-
-
                 </div>
+
+                
             </div>
         </div>
     </main>

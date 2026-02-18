@@ -30,11 +30,12 @@ def login():
             user = AdminUser.query.filter_by(email=email).first()
             if user and user.check_password(password):
                 login_user(user)
+                flash('Успешный вход!', 'success')
                 return redirect(url_for('dashboard.index'))
             else:
-                errors.append("Неверный email или пароль")
+                flash('Неверный email или пароль!', 'error')
 
-    return render_template('login.html', errors=errors, email=email)
+    return render_template('login.html')
 
 
 # ================= REGISTER =================
@@ -152,4 +153,5 @@ def confirm_code(email):
 def logout():
     logout_user()
     flash('Вы вышли из системы.', 'info')
+    print("[DEBUG] Flash создана: 'Вы вышли из системы.'")
     return redirect(url_for('auth.login'))

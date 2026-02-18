@@ -53,7 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             </span>
                         </td>
                     </tr>
-                `).join('') || `<tr><td colspan="13" class="px-3 py-10 text-center text-gray-500 italic">Нет данных</td></tr>`;
+                `).join('') || 
+                `<tr><td colspan="13" class="px-3 py-10 text-center text-gray-500 italic">Нет данных</td></tr>`;
 
                 verifiedCountEl.textContent = data.verified_count;
             })
@@ -115,4 +116,55 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('close-modal').onclick = () => {
         modal.classList.add('hidden');
     };
+
+    const filterContainer = document.querySelector('.filter-container');
+    if (filterContainer) {
+        filterContainer.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault(); // чтобы не было случайного submit
+                loadStudents();
+            }
+        });
+    }
+
+
+    const fioInput = document.getElementById('fio');
+    if (fioInput) {
+        fioInput.addEventListener('input', () => {
+            fioInput.value = fioInput.value.replace(/[0-9]/g, '');
+        });
+    }
+
+    const groupInput = document.getElementById('group');
+    if (groupInput) {
+        groupInput.addEventListener('input', () => {
+            // Удаляем всё кроме цифр
+            groupInput.value = groupInput.value.replace(/\D/g, '').slice(0, 6);
+        });
+    }
+
+    const phoneInput = document.getElementById('phone');
+    if (phoneInput) {
+        // Автоподстановка +375 если пусто
+        phoneInput.addEventListener('focus', () => {
+            if (!phoneInput.value.startsWith('+375')) {
+                phoneInput.value = '+375';
+            }
+        });
+
+        phoneInput.addEventListener('input', () => {
+            let value = phoneInput.value;
+
+            // Всегда начинается с +375
+            if (!value.startsWith('+375')) {
+                value = '+375' + value.replace(/\D/g, '');
+            }
+
+            // Оставляем только цифры после +375
+            const numbers = value.slice(4).replace(/\D/g, '').slice(0, 9);
+
+            phoneInput.value = '+375' + numbers;
+        });
+    }
+
 });
