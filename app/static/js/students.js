@@ -12,8 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
             fio: document.getElementById('fio').value.trim(),
             group: document.getElementById('group').value.trim(),
             faculty: document.getElementById('faculty').value.trim(),
+            form: document.getElementById('form')?.value.trim() || '',          
+            phone: document.getElementById('phone')?.value.trim() || '',        
+            scholarship: document.getElementById('scholarship')?.value || '',
             show_unverified: showUnverified.checked
-            // добавь сюда другие фильтры из advanced, если есть
         });
 
         fetch(`/api/students?${params.toString()}`)
@@ -69,12 +71,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Очистка фильтров по кнопке "Очистить"
     if (cancelBtn) {
         cancelBtn.onclick = () => {
-            // Очищаем поля
+            // Очищаем ВСЕ поля фильтров
             document.getElementById('fio').value = '';
             document.getElementById('group').value = '';
             document.getElementById('faculty').value = '';
-            // если есть форма обучения или другие поля — добавь их сюда
-            // document.getElementById('form').value = '';
+            document.getElementById('form').value = '';          // форма обучения
+            document.getElementById('phone').value = '';         // телефон
+            document.getElementById('scholarship').value = '';   // стипендия
 
             // Снимаем чекбокс
             showUnverified.checked = false;
