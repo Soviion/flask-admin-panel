@@ -108,12 +108,18 @@ def register():
 @auth_bp.route('/confirm/<email>', methods=['GET', 'POST'])
 def confirm_code(email):
     pending = PendingRegistration.query.filter_by(email=email).first()
-
     if not pending:
         flash("Заявка не найдена", "danger")
         return redirect(url_for('auth.register'))
 
-    if datetime.now(timezone.utc) > pending.expires_at:
+    # Приводим expires_at к aware UTC (если она naive)
+    expires_at = pending.expires_at
+    if expires_at.tzinfo is None:
+        expires_at = expires_at.replace(tzinfo=timezone.utc)
+
+    current_time = datetime.now(timezone.utc)
+
+    if current_time > expires_at:
         db.session.delete(pending)
         db.session.commit()
         flash("Код истёк", "danger")

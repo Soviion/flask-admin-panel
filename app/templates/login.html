@@ -8,20 +8,10 @@
     <link rel="stylesheet" href="/static/css/login.css">
 </head>
 <body>
-    <!-- Flash -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="flash-container max-w-md mx-auto mt-6 px-4">
-                {% for category, message in messages %}
-                    <div class="flash flash-{{ category }} p-4 rounded-xl mb-4 text-center shadow-sm">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
+    <div id="flash-data" style="display:none;">
+        {{ get_flashed_messages(with_categories=true) | tojson }}
+    </div>
 
-    <!-- Ошибки -->
     {% if errors %}
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6 max-w-md mx-auto text-center">
             {% for error in errors %}

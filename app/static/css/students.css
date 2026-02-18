@@ -1,18 +1,58 @@
-/* students.css — тёмный стиль таблицы */
+/* =====================================================
+   STUDENTS PAGE — COMPACT PREMIUM DARK UI
+   ===================================================== */
 
-.students-container {
-    max-width: 1400px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+:root {
+    --bg-main: #0f172a;
+    --bg-card: #111827;
+    --bg-card-hover: #1f2937;
+    --border: #1f2937;
+    --border-light: #243041;
+    --text-primary: #f3f4f6;
+    --text-secondary: #9ca3af;
+    --accent: #22c55e;
+    --accent-hover: #16a34a;
+    --danger: #ef4444;
 }
 
-h1 {
-    font-size: 2.25rem;
-    font-weight: 700;
-    color: #f1f5f9;
-    margin-bottom: 1.5rem;
-    text-align: center;
+/* =====================================================
+   LAYOUT
+   ===================================================== */
+
+.layout-wrapper {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
 }
+
+.table-container {
+    flex: 2;
+    min-width: 0;
+    padding-left: 10px;
+}
+
+.filter-container {
+    flex: 1;
+    position: sticky;
+    top: 24px;
+    padding-right: 10px;
+}
+
+/* =====================================================
+   CARDS
+   ===================================================== */
+
+.table-wrapper,
+.filter-wrapper {
+    background: var(--bg-card);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+/* =====================================================
+   TABLE
+   ===================================================== */
 
 .table-wrapper {
     background: rgba(30, 30, 46, 0.6);
@@ -24,8 +64,13 @@ h1 {
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 }
 
+.table-wrapper .overflow-x-auto {
+    overflow-x: hidden !important; /* насильно убираем скролл */
+}
+
 table {
     width: 100%;
+    table-layout: fixed; /* ключевое — фиксированная ширина столбцов */
     border-collapse: collapse;
 }
 
@@ -34,34 +79,266 @@ thead {
 }
 
 th {
-    padding: 1.25rem 1.5rem;
-    text-align: left;
-    font-size: 0.75rem;
+    padding: 0.6rem 0.8rem; /* ещё меньше */
+    font-size: 0.7rem; /* компактный шрифт */
     font-weight: 600;
     color: #cbd5e1;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.03em;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
+td {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8125rem;
+    color: #e2e8f0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* Фиксированные ширины столбцов (в процентах — чтобы влезало в экран) */
+th:nth-child(1), td:nth-child(1) { width: 2%; }  /* № */
+th:nth-child(2), td:nth-child(2) { width: 10%; } /* Username */
+th:nth-child(3), td:nth-child(3) { width: 16%; } /* ФИО — самый большой */
+     /* тут пропущено чтоб телеграм id скрыть*/
+th:nth-child(4), td:nth-child(5) { width: 7%; }  /* Группа*/
+th:nth-child(5), td:nth-child(6) { width: 8%; }  /* студ.б. */
+th:nth-child(6), td:nth-child(7) { width: 9%; }  /* Факультет */
+th:nth-child(7), td:nth-child(8) { width: 8%; }  /* Форма обуч. */
+th:nth-child(8), td:nth-child(9) { width: 6%; } /* Стипендия */
+th:nth-child(9), td:nth-child(10) { width: 12%; } /* тлефон */
+th:nth-child(10), td:nth-child(11) { width: 6%; } /*  */
+th:nth-child(10), td:nth-child(12) { width: 6%; } /* вереф */
+th:nth-child(11), td:nth-child(13) { width: 10%; text-align: center; } /* Действия */
+
+/* Hover и стили строк */
 tbody tr {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     transition: background 0.2s;
 }
 
 tbody tr:hover {
-    background: rgba(55, 65, 81, 0.3);
+    background: rgba(55, 65, 81, 0.4);
 }
 
-td {
-    padding: 1.25rem 1.5rem;
-    font-size: 0.95rem;
-    color: #e2e8f0;
+/* Дополнительно для мобильных — уменьшаем ещё */
+@media (max-width: 1024px) {
+    th, td {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.75rem;
+    }
+
+    table {
+        min-width: 100%; /* не даём растягиваться */
+    }
 }
 
-.empty-state {
-    padding: 6rem 2rem;
-    text-align: center;
-    color: #94a3b8;
-    font-size: 1.125rem;
-    font-style: italic;
+/* verified */
+
+.text-green-400 { color: var(--accent); }
+.text-red-400 { color: var(--danger); }
+
+/* =====================================================
+   FILTER SIDEBAR
+   ===================================================== */
+
+.filter-wrapper {
+    padding: 20px;
+}
+
+.filter-wrapper h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+
+.filter-wrapper label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.space-y-4 > * + * {
+    margin-top: 14px;
+}
+
+/* 2 columns row */
+
+.filter-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* =====================================================
+   INPUTS
+   ===================================================== */
+
+.input-filter {
+    width: 100%;
+    padding: 9px 12px;
+    background: #0f172a;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 13px;
+    transition: all .15s ease;
+}
+
+.input-filter:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.15);
+    outline: none;
+}
+
+/* =====================================================
+   BUTTONS
+   ===================================================== */
+
+.btn-submit {
+    width: 100%;
+    padding: 10px;
+    background: var(--accent);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    color: white;
+    cursor: pointer;
+    transition: all .15s ease;
+}
+
+.btn-cancel {
+    width: 100%;
+    padding: 10px;
+    
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    color: white;
+    cursor: pointer;
+    transition: all .15s ease;
+}
+
+.btn-submit:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+.btn-canscl:hover {
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    width: 100%;
+    padding: 9px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all .15s ease;
+}
+
+.btn-secondary:hover {
+    background: var(--bg-card-hover);
+    color: var(--text-primary);
+}
+
+/* =====================================================
+   ADVANCED FILTERS
+   ===================================================== */
+
+#advanced-filters {
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 8px;
+    background: #0b1220;
+    border: 1px solid var(--border);
+    display: none;
+}
+
+#advanced-filters.open {
+    display: block;
+}
+
+/* =====================================================
+   MODAL
+   ===================================================== */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    width: 420px;
+    background: var(--bg-card);
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.modal-title {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.btn-cancel {
+    flex: 1;
+    padding: 10px;
+    background: #1f2937;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all .15s ease;
+}
+
+.btn-cancel:hover {
+    background: #273449;
+    color: white;
+}
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 1100px) {
+    .layout-wrapper {
+        flex-direction: column;
+    }
+
+    .filter-container {
+        position: static;
+    }
+
+    .filter-row-2 {
+        grid-template-columns: 1fr;
+    }
 }

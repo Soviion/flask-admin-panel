@@ -7,42 +7,209 @@
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/students.css">
 </head>
-<body class="bg-gray-50">
-    <!-- Flash данные -->
+<body class="bg-gray-950 text-gray-100">
+    {% set title = "База студентов" %}
+    {% include "components/header.html" %}
+
     <div id="flash-data" style="display:none;">
         {{ get_flashed_messages(with_categories=true) | tojson }}
     </div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">Список студентов</h1>
-            <a href="/" class="text-indigo-600 hover:text-indigo-800 font-medium">← Назад на дашборд</a>
-        </div>
+    <main>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            
 
-        <div class="bg-white shadow overflow-hidden rounded-2xl border border-gray-200">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Telegram ID</th>
-                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
-                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ФИО</th>
-                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Группа</th>
-                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Верифицирован</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    <!-- Пока заглушка -->
-                    <tr>
-                        <td colspan="5" class="px-6 py-10 text-center text-gray-500 italic">
-                            Данные студентов будут здесь после подключения к БД бота
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="layout-wrapper">
+                <!-- Таблица слева (3/4 ширины на десктопе) -->
+                <div class="table-container">
+                    <div class="table-wrapper">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-800">
+                                <thead class="bg-gray-800/50">
+                                    <tr>
+                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">№</th>
+                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Username</th>
+                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">ФИО</th>
+                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Группа</th>
+                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Студ.б.</th>
+                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Факультет</th>
+                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Форма обуч.</th>
+                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Степ.</th>
+                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Телефон</th>
+                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Вериф.</th>
+                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Обновлено</th>
+                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="students-table-body" class="divide-y divide-gray-800">
+                                    <tr>
+                                        <td colspan="7" class="px-3 py-10 text-center text-gray-500 italic text-base">
+                                            Загрузка...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Фильтры справа (1/4 ширины, sticky, в таком же кругляше) -->
+                <div class="filter-container">
+
+
+                    <div class="filter-wrapper">
+
+                        <!-- Статистика -->
+                        <div style="margin-bottom:18px;">
+                            <h3 style="font-size:18px;font-weight:700;">Всего верифицированных пользователей: <a id="verified-count" style="color:var(--accent);">0</a></h3>
+                        </div>
+
+                        <h3>Фильтры</h3>
+
+                        <div class="space-y-4">
+
+                            <!-- ФИО -->
+                            <div>
+                                <label>ФИО</label>
+                                <input type="text" id="fio" class="input-filter" placeholder="Иванов Иван Иванович">
+                            </div>
+
+                            <!-- Группа + Факультет -->
+                            <div class="filter-row-2">
+                                <div>
+                                    <label>Группа</label>
+                                    <input type="text" id="group" class="input-filter" placeholder="303402">
+                                </div>
+
+                                <div>
+                                    <label>Факультет</label>
+                                    <select id="faculty" class="input-filter">
+                                        <option value="">Все</option>
+                                        <option value="ФКСиС">ФКСиС</option>
+                                        <option value="ФИТУ">ФИТУ</option>
+                                        <option value="ФКП">ФКП</option>
+                                        <option value="ФИБ">ФИБ</option>
+                                        <option value="ИЭФ">ИЭФ</option>
+                                        <option value="ФРЭ">ФРЭ</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Форма + Стипендия -->
+                            <div class="filter-row-2">
+                                <div>
+                                    <label>Форма обучения</label>
+                                    <select id="form" class="input-filter">
+                                        <option value="">Все</option>
+                                        <option value="бюджет">Бюджет</option>
+                                        <option value="платное">Платное</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label>Стипендия</label>
+                                    <select id="scholarship" class="input-filter">
+                                        <option value="">Все</option>
+                                        <option value="yes">Да</option>
+                                        <option value="no">Нет</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="filter-row-2">
+                                <!-- Телефон -->
+                                <div>
+                                    <label>Телефон</label>
+                                    <input type="text" id="phone" class="input-filter" placeholder="+375XXXXXXXXX">
+                                </div>
+                                <div>
+                                    <label>&#8203;</label>
+                                    <button id="toggle-advanced" class="btn-secondary">
+                                        Дополнительные параметры
+                                    </button>
+                                </div>    
+                            </div>    
+                            
+                            <div id="advanced-filters">
+                                <div style="display:flex;align-items:center;gap:8px;">
+                                    <input type="checkbox" id="show-unverified">
+                                    <label style="margin:0;">Показать не верифицированных</label>
+                                </div>
+                            </div>
+
+                            <div class="filter-row-2">
+                                <button id="search-btn" class="btn-submit">
+                                    Найти
+                                </button>
+                                <button id="cancel-btn" class="btn-cancel">
+                                    Очистить
+                                </button>   
+                            </div>
+                            
+
+                            
+
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
         </div>
-    </div>
+    </main>
 
     <script src="/static/js/flash.js"></script>
-    {% include 'footer.html' %}
+    <script src="/static/js/students.js"></script>
+    {% include 'components/footer.html' %}
+
+    <div id="edit-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2 class="modal-title">Редактирование студента</h2>
+
+            <input type="hidden" id="edit-telegram-id">
+
+            <label>Username</label>
+            <input id="edit-username" class="input-filter">
+
+            <label>ФИО</label>
+            <input id="edit-fullname" class="input-filter">
+
+            <label>Группа</label>
+            <input id="edit-group" class="input-filter">
+
+            <label>Факультет</label>
+            <select id="edit-faculty" class="input-filter">
+                <option value="FIB">ФИБ</option>
+                <option value="FITU">ФИТУ</option>
+                <option value="FKP">ФКП</option>
+                <option value="FKSiS">ФКСиС</option>
+                <option value="IEF">ИЭФ</option>
+                <option value="FRE">ФРЭ</option>
+            </select>
+
+            <label>Форма обучения</label>
+            <select id="edit-form" class="input-filter">
+                <option value="бюджет">Бюджет</option>
+                <option value="платное">Платное</option>
+            </select>
+
+            <label>Стипендия</label>
+            <select id="edit-scholarship" class="input-filter">
+                <option value="true">Да</option>
+                <option value="false">Нет</option>
+            </select>
+
+            <label>Телефон</label>
+            <input id="edit-phone" class="input-filter">
+
+            <div class="modal-actions">
+                <button id="save-btn" class="btn-submit">Сохранить</button>
+                <button id="close-modal" class="btn-cancel">Отмена</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
