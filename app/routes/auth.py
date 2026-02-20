@@ -35,7 +35,7 @@ def login():
             else:
                 flash('Неверный email или пароль!', 'error')
 
-    return render_template('login.html')
+    return render_template('auth/login.html')
 
 
 # ================= REGISTER =================
@@ -102,7 +102,7 @@ def register():
             flash(f"Ошибка отправки почты: {e}", "danger")
             return redirect(url_for('auth.register'))
 
-    return render_template('register.html')
+    return render_template('auth/register.html')
 
 
 # ================= CONFIRM =================
@@ -145,7 +145,7 @@ def confirm_code(email):
         else:
             flash("Неверный код", "danger")
 
-    return render_template('confirm_code.html', email=email)
+    return render_template('auth/confirm_code.html', email=email)
 
 
 @auth_bp.route('/logout')

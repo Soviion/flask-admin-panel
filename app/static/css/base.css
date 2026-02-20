@@ -26,7 +26,6 @@ main {
 /* Flash-сообщения — стекло */
 .flash-container {
     max-width: 600px;
-    margin: 1.5rem auto;
     padding: 0 1rem;
     z-index: 99999 !important;
     top: 1rem !important;

@@ -50,10 +50,14 @@ def create_app():
     from app.routes.auth import auth_bp
     from app.routes.dashboard import dashboard_bp
     from app.routes.students import students_bp
+    from app.routes.events import events_bp
+    from app.routes.system_monitor import system_monitor_bp
 
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(students_bp)
+    app.register_blueprint(events_bp)
+    app.register_blueprint(system_monitor_bp)
 
     @login_manager.user_loader
     def load_user(user_id):
