@@ -26,17 +26,19 @@
 }
 
 .table-container {
-    flex: 2;
+    flex: 3 !important;
     min-width: 0;
     padding-left: 10px;
 }
 
 .filter-container {
-    flex: 1;
+    flex: 1 !important;    /* было 1 — теперь 0.9, фильтры становятся уже */
+    max-width: 470px !important;
     position: sticky;
     top: 24px;
     padding-right: 10px;
 }
+
 
 /* =====================================================
    CARDS
@@ -53,6 +55,18 @@
 /* =====================================================
    TABLE
    ===================================================== */
+
+th:nth-child(1), td:nth-child(1)   { text-align: center !important; }  /* № */
+th:nth-child(3)                    { text-align: center !important; }  /* фио. */
+th:nth-child(4), td:nth-child(4)   { text-align: center !important; }  /* группа */
+th:nth-child(5), td:nth-child(5)   { text-align: center !important; } /* студ б */
+th:nth-child(6), td:nth-child(6)   { text-align: center !important; } /* факульт */
+th:nth-child(7), td:nth-child(7)   { text-align: center !important; } /* форма обуч */
+th:nth-child(8), td:nth-child(8)   { text-align: center !important; } /* степ */
+th:nth-child(9), td:nth-child(9)   { text-align: center !important; } /* телефон */
+th:nth-child(10), td:nth-child(10) { text-align: center !important; } /* вериф */
+th:nth-child(12), td:nth-child(12) { text-align: center !important; } /* изм */
+
 
 .table-wrapper {
     background: rgba(30, 30, 46, 0.6);
@@ -86,7 +100,6 @@ th {
     text-transform: uppercase;
     letter-spacing: 0.03em;
     text-align: left;
-    overflow: hidden;
     text-overflow: ellipsis;
 }
 
@@ -99,20 +112,6 @@ td {
 }
 
 
-/* Фиксированные ширины столбцов (в процентах — чтобы влезало в экран) */
-th:nth-child(1), td:nth-child(1) { width: 4%; }  /* № */
-th:nth-child(2), td:nth-child(2) { width: 10%; } /* Username */
-th:nth-child(3), td:nth-child(3) { width: 16%; } /* ФИО — самый большой */
-     /* тут пропущено чтоб телеграм id скрыть*/
-th:nth-child(4), td:nth-child(5) { width: 7%; }  /* Группа*/
-th:nth-child(5), td:nth-child(6) { width: 8%; }  /* студ.б. */
-th:nth-child(6), td:nth-child(7) { width: 9%; }  /* Факультет */
-th:nth-child(7), td:nth-child(8) { width: 8%; }  /* Форма обуч. */
-th:nth-child(8), td:nth-child(9) { width: 6%; } /* Стипендия */
-th:nth-child(9), td:nth-child(10) { width: 12%; } /* тлефон */
-th:nth-child(10), td:nth-child(11) { width: 6%; } /*  */
-th:nth-child(10), td:nth-child(12) { width: 6%; } /* вереф */
-th:nth-child(11), td:nth-child(13) { width: 10%; text-align: center; } /* Действия */
 
 /* Hover и стили строк */
 tbody tr {
@@ -341,4 +340,9 @@ tbody tr:hover {
     .filter-row-2 {
         grid-template-columns: 1fr;
     }
+}
+
+
+.no-data-cell {
+    text-align: center;
 }

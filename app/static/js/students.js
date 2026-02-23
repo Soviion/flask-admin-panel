@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
             fio: document.getElementById('fio').value.trim(),
             group: document.getElementById('group').value.trim(),
             faculty: document.getElementById('faculty').value.trim(),
-            form: document.getElementById('form')?.value.trim() || '',          
-            phone: document.getElementById('phone')?.value.trim() || '',        
+            form: document.getElementById('form')?.value.trim() || '',
+            phone: document.getElementById('phone')?.value.trim() || '',
             scholarship: document.getElementById('scholarship')?.value || '',
             show_unverified: showUnverified.checked
         });
@@ -22,44 +22,60 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(res => res.json())
             .then(data => {
                 if (data.error) {
-                    tableBody.innerHTML = `<tr><td colspan="9" class="text-red-500 text-center py-10">${data.error}</td></tr>`;
+                    tableBody.innerHTML = `<tr><td colspan="12" class="text-red-500 text-center py-10">${data.error}</td></tr>`;
                     return;
                 }
 
-                tableBody.innerHTML = data.students.map(student => `
-                    <tr class="hover:bg-gray-800/50 transition">
-                        <td class="px-3 py-2.5 text-sm text-gray-300">${student.num}</td>
-                        <td class="px-3 py-2.5 text-sm text-gray-300">${student.username || '—'}</td>
-                        <td class="px-3 py-2.5 text-sm text-gray-300">${student.full_name || '—'}</td>
-                        <td class="px-3 py-2.5 text-sm text-gray-300">${student.group_number || '—'}</td>
-                        <td class="px-3 py-2.5 text-sm text-gray-300">${student.stud_number || '—'}</td>
-                        <td class="px-3 py-2.5 text-sm text-gray-300">${student.faculty || '—'}</td>
-                        <td class="px-3 py-2.5 text-sm text-gray-300">${student.form_educ || '—'}</td>
-                        <td class="px-3 py-2.5 text-sm text-gray-300">${student.scholarship ? 'Да' : 'Нет'}</td>
-                        <td class="px-3 py-2.5 text-sm text-gray-300">${student.mobile_number || '—'}</td>
-                        <td class="px-3 py-2.5 text-sm ${student.is_verified ? 'text-green-400' : 'text-red-400'}">
-                            ${student.is_verified ? 'Да' : 'Нет'}
-                        </td>
-                        <td class="px-3 py-2.5 text-sm text-gray-400">
-                            ${student.updated_at ? new Date(student.updated_at).toLocaleString('ru-RU') : '—'}
-                        </td>
-                        <td class="px-3 py-2.5 text-sm text-center">
-                            <span class="gear cursor-pointer text-gray-400 hover:text-green-400" 
-                                data-id="${student.telegram_id}"
-                                data-name="${student.full_name}"
-                                data-group="${student.group_number}"
-                                data-form="${student.form_educ}">
-                                ⚙
-                            </span>
-                        </td>
-                    </tr>
-                `).join('') || 
-                `<tr><td colspan="13" class="px-3 py-10 text-center text-gray-500 italic">Нет данных</td></tr>`;
+                // Очищаем tbody, но не трогаем саму таблицу
+                while (tableBody.firstChild) {
+                    tableBody.removeChild(tableBody.firstChild);
+                }
+
+                if (data.students.length === 0) {
+                    const emptyRow = document.createElement('tr');
+                    emptyRow.innerHTML = `
+                        <td colspan="12" class="no-data-cell">
+                        Нет данных
+                        </td>`;
+                    tableBody.appendChild(emptyRow);
+                } else {
+                    data.students.forEach((student, index) => {
+                        const row = document.createElement('tr');
+                        row.className = 'hover:bg-gray-800/50 transition';
+                        row.innerHTML = `
+                            <td class="px-3 py-2.5 text-sm text-gray-300">${student.num}</td>
+                            <td class="px-3 py-2.5 text-sm text-gray-300">${student.username || '—'}</td>
+                            <td class="px-3 py-2.5 text-sm text-gray-300">${student.full_name || '—'}</td>
+                            <td class="px-3 py-2.5 text-sm text-gray-300">${student.group_number || '—'}</td>
+                            <td class="px-3 py-2.5 text-sm text-gray-300">${student.stud_number || '—'}</td>
+                            <td class="px-3 py-2.5 text-sm text-gray-300">${student.faculty || '—'}</td>
+                            <td class="px-3 py-2.5 text-sm text-gray-300">${student.form_educ || '—'}</td>
+                            <td class="px-3 py-2.5 text-sm text-gray-300">${student.scholarship ? 'Да' : 'Нет'}</td>
+                            <td class="px-3 py-2.5 text-sm text-gray-300">${student.mobile_number || '—'}</td>
+                            <td class="px-3 py-2.5 text-sm ${student.is_verified ? 'text-green-400' : 'text-red-400'}">
+                                ${student.is_verified ? 'Да' : 'Нет'}
+                            </td>
+                            <td class="px-3 py-2.5 text-sm text-gray-400">
+                                ${student.updated_at ? new Date(student.updated_at).toLocaleString('ru-RU') : '—'}
+                            </td>
+                            <td class="px-3 py-2.5 text-sm text-center">
+                                <span class="gear cursor-pointer text-gray-400 hover:text-green-400" 
+                                    data-id="${student.telegram_id}"
+                                    data-name="${student.full_name}"
+                                    data-group="${student.group_number}"
+                                    data-form="${student.form_educ}">
+                                    ⚙
+                                </span>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                }
 
                 verifiedCountEl.textContent = data.verified_count;
             })
             .catch(err => {
-                tableBody.innerHTML = `<tr><td colspan="9" class="text-red-500 text-center py-10">Ошибка: ${err}</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="12" class="text-red-500 text-center py-10">Ошибка: ${err}</td></tr>`;
             });
     }
 
@@ -138,14 +154,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const groupInput = document.getElementById('group');
     if (groupInput) {
         groupInput.addEventListener('input', () => {
-            // Удаляем всё кроме цифр
             groupInput.value = groupInput.value.replace(/\D/g, '').slice(0, 6);
         });
     }
 
     const phoneInput = document.getElementById('phone');
     if (phoneInput) {
-        // Автоподстановка +375 если пусто
         phoneInput.addEventListener('focus', () => {
             if (!phoneInput.value.startsWith('+375')) {
                 phoneInput.value = '+375';
@@ -155,12 +169,10 @@ document.addEventListener('DOMContentLoaded', () => {
         phoneInput.addEventListener('input', () => {
             let value = phoneInput.value;
 
-            // Всегда начинается с +375
             if (!value.startsWith('+375')) {
                 value = '+375' + value.replace(/\D/g, '');
             }
 
-            // Оставляем только цифры после +375
             const numbers = value.slice(4).replace(/\D/g, '').slice(0, 9);
 
             phoneInput.value = '+375' + numbers;

@@ -1,5 +1,13 @@
 /* base.css — современный тёмный стиль */
 
+html {
+    scrollbar-gutter: stable;
+}
+
+body {
+    overflow-y: scroll;
+}
+
 * {
     margin: 0;
     padding: 0;
