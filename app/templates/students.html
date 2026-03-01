@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Список студентов</title>
+    <link rel="icon" href="data:image/svg+xml,
+        <svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22>
+        <text y=%22.9em%22 font-size=%2290%22>🧑‍💻</text>
+        </svg>">
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/students.css">
 </head>
+
 <body class="bg-gray-950 text-gray-100">
     {% include "components/header.html" %}
 
@@ -16,8 +22,6 @@
 
     <main>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-            
-
             <div class="layout-wrapper">
                 <div class="table-container">
                     <div class="table-wrapper">
@@ -39,18 +43,42 @@
                                 </colgroup>
                                 <thead class="bg-gray-800/50">
                                     <tr>
-                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">№</th>
-                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Username</th>
-                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">ФИО</th>
-                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Группа</th>
-                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Студ.б.</th>
-                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Факультет</th>
-                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Форма обуч.</th>
-                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Степ.</th>
-                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Телефон</th>
-                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Вериф.</th>
-                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Обновлено</th>
-                                        <th class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Изм.</th>
+                                        <th
+                                            class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                            №</th>
+                                        <th
+                                            class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                            Username</th>
+                                        <th
+                                            class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                            ФИО</th>
+                                        <th
+                                            class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                            Группа</th>
+                                        <th
+                                            class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                            Студ.б.</th>
+                                        <th
+                                            class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                            Факультет</th>
+                                        <th
+                                            class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                            Форма обуч.</th>
+                                        <th
+                                            class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                            Степ.</th>
+                                        <th
+                                            class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                            Телефон</th>
+                                        <th
+                                            class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                            Вериф.</th>
+                                        <th
+                                            class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                            Обновлено</th>
+                                        <th
+                                            class="px-3 py-2.5 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                            Изм.</th>
                                     </tr>
                                 </thead>
                                 <tbody id="students-table-body" class="divide-y divide-gray-800">
@@ -70,7 +98,8 @@
                     <div class="filter-wrapper">
 
                         <div style="margin-bottom:18px;">
-                            <h3 style="font-size:18px;font-weight:700;">Всего верифицированных пользователей: <a id="verified-count" style="color:var(--accent);">0</a></h3>
+                            <h3 style="font-size:18px;font-weight:700;">Всего верифицированных пользователей: <a
+                                    id="verified-count" style="color:var(--accent);">0</a></h3>
                         </div>
 
                         <h3>Фильтры</h3>
@@ -130,9 +159,9 @@
                                     <button id="toggle-advanced" class="btn-secondary">
                                         Дополнительные параметры
                                     </button>
-                                </div>    
-                            </div>    
-                            
+                                </div>
+                            </div>
+
                             <div id="advanced-filters">
                                 <div style="display:flex;align-items:center;gap:8px;">
                                     <input type="checkbox" id="show-unverified">
@@ -146,14 +175,14 @@
                                 </button>
                                 <button id="cancel-btn" class="btn-cancel">
                                     Очистить
-                                </button>   
+                                </button>
                             </div>
 
                         </div>
                     </div>
                 </div>
 
-                
+
             </div>
         </div>
     </main>
@@ -167,47 +196,65 @@
             <h2 class="modal-title">Редактирование студента</h2>
 
             <input type="hidden" id="edit-telegram-id">
+            <div>
+                <label>Username</label>
+                <input id="edit-username" class="input-filter" disabled readonly style="cursor: no-drop;">
+            </div>
 
-            <label>Username</label>
-            <input id="edit-username" class="input-filter">
+            <div>
+                <label>ФИО</label>
+                <input id="edit-fullname" class="input-filter">
+            </div>
 
-            <label>ФИО</label>
-            <input id="edit-fullname" class="input-filter">
+            <div class="filter-row-2">
+                <div>
+                    <label>Группа</label>
+                    <input id="edit-group" class="input-filter">
+                </div>
+                <div>
+                    <label>Факультет</label>
+                    <select id="edit-faculty" class="input-filter">
+                        <option value="FIB">ФИБ</option>
+                        <option value="FITU">ФИТУ</option>
+                        <option value="FKP">ФКП</option>
+                        <option value="FKSiS">ФКСиС</option>
+                        <option value="IEF">ИЭФ</option>
+                        <option value="FRE">ФРЭ</option>
+                    </select>
+                </div>
+            </div>
 
-            <label>Группа</label>
-            <input id="edit-group" class="input-filter">
+            <div class="filter-row-2">
+                <div>
+                    <label>Форма обучения</label>
+                    <select id="edit-form" class="input-filter">
+                        <option value="бюджет">Бюджет</option>
+                        <option value="платное">Платное</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Стипендия</label>
+                    <select id="edit-scholarship" class="input-filter">
+                        <option value="true">Да</option>
+                        <option value="false">Нет</option>
+                    </select>
+                </div>
+            </div>
 
-            <label>Факультет</label>
-            <select id="edit-faculty" class="input-filter">
-                <option value="FIB">ФИБ</option>
-                <option value="FITU">ФИТУ</option>
-                <option value="FKP">ФКП</option>
-                <option value="FKSiS">ФКСиС</option>
-                <option value="IEF">ИЭФ</option>
-                <option value="FRE">ФРЭ</option>
-            </select>
-
-            <label>Форма обучения</label>
-            <select id="edit-form" class="input-filter">
-                <option value="бюджет">Бюджет</option>
-                <option value="платное">Платное</option>
-            </select>
-
-            <label>Стипендия</label>
-            <select id="edit-scholarship" class="input-filter">
-                <option value="true">Да</option>
-                <option value="false">Нет</option>
-            </select>
-
-            <label>Телефон</label>
-            <input id="edit-phone" class="input-filter">
+            <div>
+                <label>Телефон</label>
+                <input id="edit-phone" class="input-filter">
+            </div>
 
             <div class="modal-actions">
                 <button id="save-btn" class="btn-submit">Сохранить</button>
+                <button id="delite-btn" class="btn-delete">Удалить</button>
                 <button id="close-modal" class="btn-cancel">Отмена</button>
             </div>
         </div>
     </div>
-</body>
-</html>
 
+
+</body>
+
+</html>

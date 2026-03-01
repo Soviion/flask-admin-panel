@@ -1,5 +1,5 @@
 /* =====================================================
-   STUDENTS PAGE — COMPACT PREMIUM DARK UI
+   STUDENTS PAGE — PREMIUM SaaS DARK (REFINED)
    ===================================================== */
 
 :root {
@@ -21,155 +21,144 @@
 
 .layout-wrapper {
     display: flex;
-    gap: 28px;
+    gap: 36px;
+    /* больше воздуха */
     align-items: flex-start;
 }
 
 .table-container {
-    flex: 3 !important;
+    flex: 3;
     min-width: 0;
-    padding-left: 10px;
 }
 
 .filter-container {
-    flex: 1 !important;    /* было 1 — теперь 0.9, фильтры становятся уже */
-    max-width: 470px !important;
+    flex: 1;
+    max-width: 420px;
     position: sticky;
-    top: 24px;
-    padding-right: 10px;
+    top: 28px;
 }
 
-
 /* =====================================================
-   CARDS
+   CARD BASE
    ===================================================== */
 
 .table-wrapper,
 .filter-wrapper {
-    background: var(--bg-card);
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    background: linear-gradient(to bottom,
+            rgba(17, 24, 39, 0.9),
+            rgba(17, 24, 39, 0.85));
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
 }
 
 /* =====================================================
    TABLE
    ===================================================== */
 
-th:nth-child(1), td:nth-child(1)   { text-align: center !important; }  /* № */
-th:nth-child(3)                    { text-align: center !important; }  /* фио. */
-th:nth-child(4), td:nth-child(4)   { text-align: center !important; }  /* группа */
-th:nth-child(5), td:nth-child(5)   { text-align: center !important; } /* студ б */
-th:nth-child(6), td:nth-child(6)   { text-align: center !important; } /* факульт */
-th:nth-child(7), td:nth-child(7)   { text-align: center !important; } /* форма обуч */
-th:nth-child(8), td:nth-child(8)   { text-align: center !important; } /* степ */
-th:nth-child(9), td:nth-child(9)   { text-align: center !important; } /* телефон */
-th:nth-child(10), td:nth-child(10) { text-align: center !important; } /* вериф */
-th:nth-child(12), td:nth-child(12) { text-align: center !important; } /* изм */
-
-
 .table-wrapper {
-    background: rgba(30, 30, 46, 0.6);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-radius: 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.08);
     overflow: hidden;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-}
-
-.table-wrapper .overflow-x-auto {
-    overflow-x: hidden !important; /* насильно убираем скролл */
 }
 
 table {
     width: 100%;
-    table-layout: fixed; /* ключевое — фиксированная ширина столбцов */
+    table-layout: fixed;
     border-collapse: collapse;
 }
 
 thead {
-    background: rgba(55, 65, 81, 0.5);
+    background: rgba(55, 65, 81, 0.35);
 }
 
 th {
-    padding: 0.6rem 0.8rem; /* ещё меньше */
-    font-size: 0.7rem; /* компактный шрифт */
+    padding: 0.75rem 0.9rem;
+    font-size: 0.68rem;
     font-weight: 600;
-    color: #cbd5e1;
+    color: #94a3b8;
     text-transform: uppercase;
-    letter-spacing: 0.03em;
-    text-align: left;
-    text-overflow: ellipsis;
+    letter-spacing: 0.06em;
 }
 
 td {
-    padding: 0.6rem 0.8rem;
-    font-size: 0.8125rem;
+    padding: 0.75rem 0.9rem;
+    font-size: 0.8rem;
     color: #e2e8f0;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
+/* центровки */
+th:nth-child(1),
+td:nth-child(1),
+th:nth-child(4),
+td:nth-child(4),
+th:nth-child(5),
+td:nth-child(5),
+th:nth-child(6),
+td:nth-child(6),
+th:nth-child(7),
+td:nth-child(7),
+th:nth-child(8),
+td:nth-child(8),
+th:nth-child(9),
+td:nth-child(9),
+th:nth-child(10),
+td:nth-child(10),
+th:nth-child(12),
+td:nth-child(12) {
+    text-align: center !important;
+}
 
-
-/* Hover и стили строк */
 tbody tr {
-    transition: background 0.2s;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    transition: all 0.18s ease;
 }
 
 tbody tr:hover {
-    background: rgba(55, 65, 81, 0.4);
-}
-
-/* Дополнительно для мобильных — уменьшаем ещё */
-@media (max-width: 1024px) {
-    th, td {
-        padding: 0.5rem 0.6rem;
-        font-size: 0.75rem;
-    }
-
-    table {
-        min-width: 100%; /* не даём растягиваться */
-    }
+    background: rgba(55, 65, 81, 0.35);
+    transform: scale(1.002);
 }
 
 /* verified */
+.text-green-400 {
+    color: var(--accent);
+}
 
-.text-green-400 { color: var(--accent); }
-.text-red-400 { color: var(--danger); }
+.text-red-400 {
+    color: var(--danger);
+}
 
 /* =====================================================
    FILTER SIDEBAR
    ===================================================== */
 
 .filter-wrapper {
-    padding: 20px;
+    padding: 26px;
 }
 
 .filter-wrapper h3 {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
-    margin-bottom: 14px;
+    margin-bottom: 18px;
 }
 
 .filter-wrapper label {
     display: block;
     font-size: 12px;
     color: var(--text-secondary);
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
-.space-y-4 > * + * {
-    margin-top: 14px;
+.space-y-4>*+* {
+    margin-top: 16px;
 }
-
-/* 2 columns row */
 
 .filter-row-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 14px;
 }
 
 /* =====================================================
@@ -178,18 +167,18 @@ tbody tr:hover {
 
 .input-filter {
     width: 100%;
-    padding: 9px 12px;
-    background: #0f172a;
-    border: 1px solid var(--border);
-    border-radius: 8px;
+    padding: 10px 13px;
+    background: #0b1220;
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
     color: var(--text-primary);
     font-size: 13px;
-    transition: all .15s ease;
+    transition: all .18s ease;
 }
 
 .input-filter:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(34,197,94,0.15);
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
     outline: none;
 }
 
@@ -197,51 +186,57 @@ tbody tr:hover {
    BUTTONS
    ===================================================== */
 
-.btn-submit {
+.btn-submit,
+.btn-delete,
+.btn-cancel,
+.btn-secondary {
     width: 100%;
     padding: 10px;
-    background: var(--accent);
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
+    border-radius: 10px;
     font-size: 13px;
-    color: white;
+    font-weight: 600;
     cursor: pointer;
-    transition: all .15s ease;
+    transition: all .18s ease;
 }
 
-.btn-cancel {
-    width: 100%;
-    padding: 10px;
-    
+.btn-submit {
+    background: var(--accent);
     border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 13px;
     color: white;
-    cursor: pointer;
-    transition: all .15s ease;
 }
 
 .btn-submit:hover {
     background: var(--accent-hover);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
 }
 
-.btn-canscl:hover {
-    transform: translateY(-1px);
+.btn-delete {
+    background: #d93025;
+    border: none;
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #c5221f;
+    transform: translateY(-2px);
+}
+
+.btn-cancel {
+    background: #1f2937;
+    border: 1px solid var(--border-light);
+    color: var(--text-secondary);
+}
+
+.btn-cancel:hover {
+    background: #273449;
+    color: white;
+    transform: translateY(-2px);
 }
 
 .btn-secondary {
-    width: 100%;
-    padding: 9px;
     background: transparent;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    font-size: 13px;
+    border: 1px solid var(--border-light);
     color: var(--text-secondary);
-    cursor: pointer;
-    transition: all .15s ease;
 }
 
 .btn-secondary:hover {
@@ -254,11 +249,11 @@ tbody tr:hover {
    ===================================================== */
 
 #advanced-filters {
-    margin-top: 10px;
-    padding: 12px;
-    border-radius: 8px;
+    margin-top: 12px;
+    padding: 14px;
+    border-radius: 12px;
     background: #0b1220;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-light);
     display: none;
 }
 
@@ -273,7 +268,7 @@ tbody tr:hover {
 .modal {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.65);
+    background: rgba(0, 0, 0, 0.75);
     backdrop-filter: blur(6px);
     display: flex;
     align-items: center;
@@ -286,62 +281,48 @@ tbody tr:hover {
 }
 
 .modal-content {
-    width: 420px;
-    background: var(--bg-card);
-    border-radius: 14px;
-    padding: 24px;
-    border: 1px solid var(--border);
-    box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+    width: 460px;
+    background: linear-gradient(to bottom,
+            #111827,
+            #0f172a);
+    border-radius: 20px;
+    padding: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 16px;
 }
 
 .modal-title {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 600;
 }
 
 .modal-actions {
     display: flex;
-    gap: 10px;
-    margin-top: 8px;
-}
-
-.btn-cancel {
-    flex: 1;
-    padding: 10px;
-    background: #1f2937;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all .15s ease;
-}
-
-.btn-cancel:hover {
-    background: #273449;
-    color: white;
+    gap: 12px;
+    margin-top: 10px;
 }
 
 /* =====================================================
    RESPONSIVE
    ===================================================== */
 
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
     .layout-wrapper {
         flex-direction: column;
     }
 
     .filter-container {
         position: static;
+        max-width: 100%;
     }
 
     .filter-row-2 {
         grid-template-columns: 1fr;
     }
 }
-
 
 .no-data-cell {
     text-align: center;

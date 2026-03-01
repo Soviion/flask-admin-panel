@@ -11,6 +11,8 @@ students_bp = Blueprint('students', __name__)
 def list():
     return render_template('students.html', is_students=True)
 
+
+
 @students_bp.route('/api/students')
 @login_required
 def api_students():
@@ -32,8 +34,11 @@ def api_students():
         "ФРЭ": "FRE"
     }
 
+    reverse_map = {v: k for k, v in faculty_map.items()}
+
     query = """
-        SELECT 
+        SELECT
+            telegram_id,
             row_number() OVER (ORDER BY created_at ASC) AS num,
             username,
             full_name,
@@ -89,11 +94,10 @@ def api_students():
     try:
         result = db.session.execute(text(query), params).fetchall()
 
-        reverse_map = {v: k for k, v in faculty_map.items()}
-
         students = []
         for row in result:
             student = row._asdict()
+            student["faculty_code"] = student["faculty"]  # сохраняем оригинальный код
             student["faculty"] = reverse_map.get(student["faculty"], student["faculty"])
             students.append(student)
 
@@ -109,38 +113,97 @@ def api_students():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-@students_bp.route('/api/students/update', methods=['POST'])
+@students_bp.route('/api/students/update', methods=['PATCH'])
 @login_required
 def update_student():
-    data = request.json
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "Нет данных"}), 400
+
+    if not data or 'telegram_id' not in data:
+        return jsonify({"error": "telegram_id обязателен"}), 400
+
+    try:
+        telegram_id = int(data["telegram_id"])
+    except (ValueError, TypeError):
+        return jsonify({"error": "telegram_id должен быть числом"}), 400
+
+
+    faculty_map = {
+        "ФИБ": "FIB",
+        "ФИТУ": "FITU",
+        "ФКП": "FKP",
+        "ФКСиС": "FKSiS",
+        "ИЭФ": "IEF",
+        "ФРЭ": "FRE"
+    }
+
+    reverse_map = {v: k for k, v in faculty_map.items()}
+
+    if not data or 'telegram_id' not in data:
+        return jsonify({"error": "telegram_id обязателен"}), 400
 
     query = """
         UPDATE users
         SET 
-            username = :username,
-            full_name = :full_name,
-            group_number = :group_number,
-            search_studn = :search_studn,
-            faculty = :faculty,
-            form_educ = :form_educ,
-            scholarship = :scholarship,
-            mobile_number = :mobile_number,
+            username = COALESCE(:username, username),
+            full_name = COALESCE(:full_name, full_name),
+            group_number = COALESCE(:group_number, group_number),
+            stud_number = COALESCE(:stud_number, stud_number),
+            faculty = COALESCE(:faculty, faculty),
+            form_educ = COALESCE(:form_educ, form_educ),
+            scholarship = COALESCE(:scholarship, scholarship),
+            mobile_number = COALESCE(:mobile_number, mobile_number),
             updated_at = NOW()
         WHERE telegram_id = :telegram_id
+        RETURNING telegram_id, username, full_name, group_number, stud_number, faculty, form_educ, scholarship, mobile_number, is_verified, created_at, updated_at
     """
 
-    db.session.execute(text(query), {
-        "telegram_id": data["telegram_id"],
-        "username": data["username"],
-        "full_name": data["full_name"],
-        "group_number": data["group_number"],
-        "search_studn": data["search_studn"],
-        "faculty": data["faculty"],
-        "form_educ": data["form_educ"],
-        "scholarship": data["scholarship"] == "true",
-        "mobile_number": data["mobile_number"],
-    })
+    try:
+        result = db.session.execute(text(query), {
+            "telegram_id": data["telegram_id"],
+            "username": data.get("username"),
+            "full_name": data.get("full_name"),
+            "group_number": data.get("group_number"),
+            "stud_number": data.get("stud_number"),
+            "faculty": data.get("faculty"),
+            "form_educ": data.get("form_educ"),
+            "scholarship": data.get("scholarship") == "true" if "scholarship" in data else None,
+            "mobile_number": data.get("mobile_number"),
+        }).fetchone()
 
-    db.session.commit()
+        db.session.commit()
 
-    return jsonify({"success": True})
+        if result:
+            updated = dict(result._mapping)
+            # Если нужно перевести faculty в название
+            updated["faculty"] = reverse_map.get(updated["faculty"], updated["faculty"])
+            return jsonify({
+                "success": True, 
+                "student": updated
+            })
+        else:
+            return jsonify({"error": "Студент не найден"}), 404
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+
+@students_bp.route('/api/students/<telegram_id>', methods=['DELETE'])
+@login_required
+def delete_student(telegram_id):
+
+    try:
+        telegram_id = int(telegram_id)  # ← принудительно в число
+    except ValueError:
+        return jsonify({"error": "telegram_id должен быть числом"}), 400
+
+    try:
+        db.session.execute(text("DELETE FROM users WHERE telegram_id = :telegram_id"), {"telegram_id": telegram_id})
+        db.session.commit()
+        return jsonify({"success": True})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500

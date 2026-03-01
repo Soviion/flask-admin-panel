@@ -28,82 +28,52 @@ body {
 main {
     flex: 1;
     padding: 2rem 1rem;
+    padding-bottom: 60px;
 }
 
 
-/* Flash-сообщения — стекло */
 .flash-container {
-    max-width: 600px;
-    padding: 0 1rem;
-    z-index: 99999 !important;
+    position: fixed !important;
     top: 1rem !important;
     right: 1rem !important;
+    z-index: 99999 !important;
+    pointer-events: none !important;
 }
 
-.flash {
-    padding: 1rem 1.5rem;
-    border-radius: 1rem;
-    margin-bottom: 1rem;
-    font-size: 0.95rem;
-    font-weight: 500;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    animation: fadeInUp 0.4s ease-out;
-}
-
-.flash-success {
-    background: rgba(16, 185, 129, 0.15);
-    color: #34d399;
-    border-color: rgba(52, 211, 153, 0.3);
-}
-
-.flash-danger, .flash-error {
-    background: rgba(239, 68, 68, 0.15);
-    color: #f87171;
-    border-color: rgba(248, 113, 113, 0.3);
-}
-
-.flash-warning {
-    background: rgba(245, 158, 11, 0.15);
-    color: #fbbf24;
-    border-color: rgba(251, 191, 36, 0.3);
-}
-
-.flash-info {
-    background: rgba(59, 130, 246, 0.15);
-    color: #60a5fa;
-    border-color: rgba(96, 165, 250, 0.3);
-}
-
-/* Анимация появления flash */
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Уменьшаем размер и делаем форму единой */
-.flash-toast {
+.flash-item {
+    pointer-events: auto !important;
     min-width: 280px !important;
     max-width: 360px !important;
     padding: 0.75rem 1rem !important;
-    font-size: 0.875rem !important;
-    line-height: 1.4 !important;
     border-radius: 0.75rem !important;
-    border-width: 1px !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    transition: all 0.35s ease-out !important;
 }
 
-/* Форма для всех категорий — одинаковая */
+/* Убираем конфликтующие стили из base.css */
 .flash-success,
-.flash-info,
 .flash-danger,
+.flash-error,
 .flash-warning,
-.flash-error {
-    border-radius: 0.75rem !important;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.4) !important;
+.flash-info {
+    background: inherit !important;
+    /* пусть JS сам красит */
+    border: none !important;
+    /* JS сам ставит */
+}
+
+/* Анимация */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

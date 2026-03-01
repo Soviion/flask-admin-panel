@@ -1,100 +1,196 @@
 <!DOCTYPE html>
 <html lang="ru" class="dark">
+
 <head>
     <meta charset="UTF-8">
+    <title>Главная</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,
+        <svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22>
+        <text y=%22.9em%22 font-size=%2290%22>🧑‍💻</text>
+        </svg>">
     <link rel="stylesheet" href="/static/css/base.css">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-950 text-gray-100 min-h-screen flex flex-col">
 
-    
     {% include "components/header.html" %}
 
     <div id="flash-data" style="display:none;">
         {{ get_flashed_messages(with_categories=true) | tojson }}
     </div>
 
+    <main class="flex-grow">
 
-    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="max-w-6xl mx-auto px-6 py-16">
 
+            <div class="text-center mb-14">
+                <h1 class="text-3xl font-bold tracking-tight mb-3">
+                    Панель управления
+                </h1>
+                <p class="text-gray-400 text-sm max-w-xl mx-auto">
+                    Выберите раздел системы для работы с данными, мониторингом и управлением.
+                </p>
+            </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 justify-items-center">
+            <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 
-            <a href="{{ url_for('students.list') }}" 
-               class="group bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl hover:bg-gray-700/80 transition-all duration-300 w-full max-w-xs border border-gray-700 overflow-hidden">
-                <div class="p-6 text-center">
-                    <div class="mx-auto mb-4 w-14 h-14 flex items-center justify-center bg-blue-900/50 rounded-xl">
-                        <svg class="w-8 h-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
+                <a href="{{ url_for('students.list') }}" class="group relative flex flex-col justify-between
+                          bg-gray-800/70 backdrop-blur-md
+                          rounded-2xl border border-gray-700/70
+                          p-8
+                          hover:bg-gray-700/70
+                          hover:-translate-y-1
+                          hover:shadow-2xl
+                          transition-all duration-300">
+
+                    <div>
+                        <div class="mb-6 w-14 h-14 flex items-center justify-center
+                                    bg-blue-900/40 rounded-xl">
+                            <svg class="w-7 h-7 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                        </div>
+
+                        <h3 class="text-lg font-semibold mb-2 group-hover:text-blue-300">
+                            База студентов
+                        </h3>
+
+                        <p class="text-sm text-gray-400">
+                            Просмотр, поиск и редактирование данных студентов.
+                        </p>
                     </div>
-                    <h3 class="text-lg font-semibold text-white group-hover:text-blue-300">База студентов</h3>
-                    <p class="text-sm text-gray-400 mt-2">Просмотр, поиск, редактирование</p>
-                </div>
-            </a>
+                </a>
 
-            <a href="{{ url_for('events.list') }}" 
-                class="group bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl hover:bg-gray-700/80 transition-all duration-300 w-full max-w-xs border border-gray-700 overflow-hidden">
-                    <div class="p-6 text-center">
-                        <div class="mx-auto mb-4 w-14 h-14 flex items-center justify-center bg-orange-900/50 rounded-xl">
-                            <svg class="w-8 h-8 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+
+                <div class="group relative flex flex-col justify-between
+                            bg-gray-800/50 backdrop-blur-md
+                            rounded-2xl border border-gray-700/60
+                            p-8 opacity-60 cursor-not-allowed">
+
+                    <div>
+                        <div class="mb-6 w-14 h-14 flex items-center justify-center
+                                    bg-orange-900/40 rounded-xl">
+                            <svg class="w-7 h-7 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                         </div>
-                        <h3 class="text-lg font-semibold text-white group-hover:text-orange-300">Мероприятия</h3>
-                        <p class="text-sm text-gray-400 mt-2">Создание, мониторинг, управление</p>
-                    </div>
-                </a>
 
-            <a href="#" 
-                class="group bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl hover:bg-gray-700/80 transition-all duration-300 w-full max-w-xs border border-gray-700 overflow-hidden opacity-70 cursor-not-allowed">
-                    <div class="p-6 text-center">
-                        <div class="mx-auto mb-4 w-14 h-14 flex items-center justify-center bg-purple-900/50 rounded-xl">
-                            <svg class="w-8 h-8 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" 
+                        <h3 class="text-lg font-semibold mb-2">
+                            Мероприятия
+                        </h3>
+
+                        <p class="text-sm text-gray-400">
+                            Создание и мониторинг мероприятий.
+                        </p>
+
+                        <span class="mt-4 inline-block text-xs text-gray-500">
+                            Скоро
+                        </span>
+                    </div>
+                </div>
+
+
+                <div class="group relative flex flex-col justify-between
+                            bg-gray-800/50 backdrop-blur-md
+                            rounded-2xl border border-gray-700/60
+                            p-8 opacity-60 cursor-not-allowed">
+
+                    <div>
+                        <div class="mb-6 w-14 h-14 flex items-center justify-center
+                                    bg-purple-900/40 rounded-xl">
+                            <svg class="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                         </div>
-                        <h3 class="text-lg font-semibold text-white group-hover:text-purple-300">Освобождения</h3>
-                        <p class="text-sm text-gray-400 mt-2">Генерация и управление особождениями</p>
-                        <span class="mt-3 inline-block text-xs text-gray-500">Скоро</span>
+
+                        <h3 class="text-lg font-semibold mb-2">
+                            Освобождения
+                        </h3>
+
+                        <p class="text-sm text-gray-400">
+                            Генерация и управление освобождениями.
+                        </p>
+
+                        <span class="mt-4 inline-block text-xs text-gray-500">
+                            Скоро
+                        </span>
+                    </div>
+                </div>
+
+
+                {% if current_user.email == 'alexeyyakovchik09@gmail.com' %}
+
+                <a href="{{ url_for('reg_monitor.list') }}" class="group relative flex flex-col justify-between
+                          bg-gray-800/70 backdrop-blur-md
+                          rounded-2xl border border-gray-700/70
+                          p-8
+                          hover:bg-gray-700/70
+                          hover:-translate-y-1
+                          hover:shadow-2xl
+                          transition-all duration-300">
+
+                    <div>
+                        <div class="mb-6 w-14 h-14 flex items-center justify-center
+                                    bg-green-900/40 rounded-xl">
+                            <svg class="w-7 h-7 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+
+                        <h3 class="text-lg font-semibold mb-2 group-hover:text-green-300">
+                            Регистрация
+                        </h3>
+
+                        <p class="text-sm text-gray-400">
+                            Подтверждение и управление пользователями (админы).
+                        </p>
                     </div>
                 </a>
 
-            <a href="#" 
-               class="group bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl hover:bg-gray-700/80 transition-all duration-300 w-full max-w-xs border border-gray-700 overflow-hidden opacity-70 cursor-not-allowed">
-                <div class="p-6 text-center">
-                    <div class="mx-auto mb-4 w-14 h-14 flex items-center justify-center bg-purple-900/50 rounded-xl">
-                        <svg class="w-8 h-8 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-lg font-semibold text-white group-hover:text-green-300">Регистрация</h3>
-                    <p class="text-sm text-gray-400 mt-2">Подтверждение, коды, заявки</p>
-                    <span class="mt-3 inline-block text-xs text-gray-500">Скоро</span>
-                </div>
-            </a>
 
-            <a href="{{ url_for('system_monitor.list') }}" 
-               class="group bg-gray-800/60 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl hover:bg-gray-700/80 transition-all duration-300 w-full max-w-xs border border-gray-700 overflow-hidden">
-                <div class="p-6 text-center">
-                    <div class="mx-auto mb-4 w-14 h-14 flex items-center justify-center bg-orange-900/50 rounded-xl">
-                        <svg class="w-8 h-8 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-lg font-semibold text-white group-hover:text-orange-300">Аудит системы</h3>
-                    <span class="mt-3 inline-block text-xs text-gray-500"></span>
-                </div>
-            </a>
+                <a href="{{ url_for('system_monitor.list') }}" class="group relative flex flex-col justify-between
+                          bg-gray-800/70 backdrop-blur-md
+                          rounded-2xl border border-gray-700/70
+                          p-8
+                          hover:bg-gray-700/70
+                          hover:-translate-y-1
+                          hover:shadow-2xl
+                          transition-all duration-300">
 
-            
+                    <div>
+                        <div class="mb-6 w-14 h-14 flex items-center justify-center
+                                    bg-orange-900/40 rounded-xl">
+                            <svg class="w-7 h-7 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+
+                        <h3 class="text-lg font-semibold mb-2 group-hover:text-orange-300">
+                            Аудит системы
+                        </h3>
+
+                        <p class="text-sm text-gray-400">
+                            Журнал действий и контроль изменений.
+                        </p>
+                    </div>
+                </a>
+
+                {% endif %}
+
+            </div>
         </div>
+
     </main>
 
     <script src="/static/js/flash.js"></script>
     {% include 'components/footer.html' %}
 </body>
+
 </html>

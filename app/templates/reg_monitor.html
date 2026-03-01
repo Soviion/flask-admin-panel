@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Монитор Регистрации</title>
+    <link rel="icon" href="data:image/svg+xml,
+        <svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22>
+        <text y=%22.9em%22 font-size=%2290%22>🧑‍💻</text>
+        </svg>">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/reg_monitor.css">
+</head>
+
+<body class="bg-gray-950 text-gray-100">
+    {% include "components/header.html" %}
+
+    <div id="flash-data" style="display:none;">
+        {{ get_flashed_messages(with_categories=true) | tojson }}
+    </div>
+
+    <main class="reg-main">
+        <div class="reg-container">
+            <div class="layout-wrapper">
+
+                <!-- Таблица -->
+                <div class="table-container">
+                    <div class="table-wrapper">
+                        <div class="table-header">
+                            <h2>Администраторы</h2>
+                            <div class="admin-count">
+                                Всего: <span id="admin-count">{{ admins|length }}</span>
+                            </div>
+                        </div>
+
+                        <div class="table-scroll">
+                            <table>
+                                <colgroup>
+                                    <col style="width:6%">
+                                    <col style="width:26%">
+                                    <col style="width:28%">
+                                    <col style="width:10%">
+                                    <col style="width:16%">
+
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Email</th>
+                                        <th>ФИО</th>
+                                        <th class="center">Активен</th>
+                                        <th class="center">Зарегистрирован</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody id="admins-table-body">
+                                    {% for admin in admins %}
+                                    <tr data-id="{{ admin.id }}">
+                                        <td class="center">{{ admin.id }}</td>
+                                        <td>{{ admin.email }}</td>
+                                        <td>{{ admin.full_name or '—' }}</td>
+                                        <td class="center">
+                                            <label class="toggle">
+                                                <input type="checkbox" class="toggle-active" {% if admin.is_active
+                                                    %}checked{% endif %} data-id="{{ admin.id }}" {% if
+                                                    admin.id==current_user.id %}disabled{% endif %}>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </td>
+                                        <td class="center">
+                                            {{ admin.created_at.strftime('%d.%m.%Y %H:%M') if admin.created_at else '—'
+                                            }}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+
+                                    {% if not admins %}
+                                    <tr>
+                                        <td colspan="6" class="empty">
+                                            Нет администраторов
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Фильтры -->
+                <div class="filter-container">
+                    <div class="filter-wrapper">
+                        <h3>Фильтры</h3>
+
+                        <div class="filter-group">
+                            <label>Email / ФИО</label>
+                            <input type="text" id="search" class="input-filter" placeholder="Поиск...">
+                        </div>
+
+                        <div class="filter-group">
+                            <label>Статус</label>
+                            <select id="status" class="input-filter">
+                                <option value="">Все</option>
+                                <option value="active">Активные</option>
+                                <option value="inactive">Неактивные</option>
+                            </select>
+                        </div>
+
+                        <button id="cancel-btn" class="btn-cancel">
+                            Очистить
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="/static/js/flash.js"></script>
+    <script src="/static/js/reg_monitor.js"></script>
+    {% include 'components/footer.html' %}
+</body>
+
+</html>

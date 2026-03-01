@@ -1,0 +1,29 @@
+/* sys_monitor.css */
+
+
+
+/* main занимает всё пространство между header и footer */
+main {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 100px); /* пример: хэдер + футер ~100px, подкорректируй */
+    padding: 0 1rem;
+}
+
+/* контейнер с логами растягивается на всё оставшееся место */
+.log-container {
+    flex: 1; /* занимает всё доступное место */
+    background: #0f172a;
+    color: #22c55e;
+    overflow-y: auto;
+    padding: 15px;
+    font-family: monospace;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+/* каждая строка лога */
+.log-line {
+    white-space: pre-wrap; /* перенос длинных строк */
+    margin: 0;
+}

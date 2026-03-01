@@ -37,6 +37,7 @@ def create_app():
     app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")
     app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")
     app.config["MAIL_DEFAULT_SENDER"] = os.getenv("MAIL_DEFAULT_SENDER")
+    app.config["MAIL_TIMEOUT"] = int(os.getenv("MAIL_TIMEOUT", 10))
 
     app.config['WTF_CSRF_ENABLED'] = False
     
@@ -52,12 +53,14 @@ def create_app():
     from app.routes.students import students_bp
     from app.routes.events import events_bp
     from app.routes.system_monitor import system_monitor_bp
+    from app.routes.reg_monitor import reg_monitor_bp
 
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(students_bp)
     app.register_blueprint(events_bp)
     app.register_blueprint(system_monitor_bp)
+    app.register_blueprint(reg_monitor_bp)
 
     @login_manager.user_loader
     def load_user(user_id):

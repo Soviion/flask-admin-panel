@@ -1,100 +1,330 @@
-<header class="bg-gray-900/90 backdrop-blur-md border-b border-gray-800 sticky top-0 z-50 shadow-lg">
+<header class="app-header">
     <style>
-        header {
-            background: linear-gradient(to bottom, rgba(17, 24, 39, 0.92), rgba(17, 24, 39, 0.85)) !important;
-            backdrop-filter: blur(12px) !important;
-            -webkit-backdrop-filter: blur(12px) !important;
-            border-bottom: 1px solid rgba(52, 211, 153, 0.25) !important; /* лёгкий зелёный оттенок линии */
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6) !important;
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            background: linear-gradient(to bottom,
+                    rgba(17, 24, 39, 0.96),
+                    rgba(17, 24, 39, 0.88));
+            border-bottom: 1px solid rgba(52, 211, 153, 0.18);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.55);
         }
 
-        header .container {
+        .app-header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #34d399, transparent);
+            opacity: 0.4;
+        }
+
+        .app-header .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 1rem 1.5rem;
+            padding: 1.1rem 1.75rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        header h1 {
-            font-size: 1.5rem;
+        .app-title {
+            font-size: 1.45rem;
             font-weight: 700;
+            letter-spacing: -0.02em;
             color: #f3f4f6;
-            margin: 0;
-            letter-spacing: -0.025em;
-        }
-
-        header h1 span {
-            background: linear-gradient(to right, #34d399, #10b981);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        header .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 1.75rem;
-        }
-
-        header .nav-link {
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: #9ca3af;
-            transition: all 0.2s ease;
-            text-decoration: none;
             position: relative;
         }
 
-        header .nav-link:hover {
-            color: #34d399;
+        .app-title::after {
+            content: "";
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 40%;
+            height: 2px;
+            background: linear-gradient(to right, #34d399, transparent);
+            border-radius: 4px;
         }
 
-        header .nav-link.active {
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.8rem;
+        }
+
+        .nav-link {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #9ca3af;
+            text-decoration: none;
+            position: relative;
+            transition: all 0.25s ease;
+        }
+
+        .nav-link:hover {
+            color: #34d399;
+            transform: translateY(-1px);
+        }
+
+        .nav-link.active {
             color: #34d399;
             font-weight: 600;
         }
 
-        header .nav-link::after {
-            content: '';
+        .nav-link::after {
+            content: "";
             position: absolute;
+            bottom: -6px;
+            left: 0;
             width: 0;
             height: 2px;
-            bottom: -4px;
-            left: 0;
             background: #34d399;
             transition: width 0.3s ease;
         }
 
-        header .nav-link:hover::after,
-        header .nav-link.active::after {
+        .nav-link:hover::after,
+        .nav-link.active::after {
             width: 100%;
         }
 
-        header .logout-link {
+
+
+        .logout-link {
             color: #f87171;
         }
 
-        header .logout-link:hover {
+        .logout-link:hover {
             color: #fca5a5;
         }
 
+        .gear-link {
+            font-size: 1.1rem;
+            opacity: 0.7;
+            transition: all 0.25s ease;
+        }
+
+        .gear-link:hover {
+            opacity: 1;
+
+        }
+
         @media (max-width: 768px) {
-            header .container {
-                padding: 0.75rem 1rem;
+            .app-header .container {
+                padding: 0.9rem 1rem;
             }
 
-            header h1 {
-                font-size: 1.25rem;
+            .app-title {
+                font-size: 1.2rem;
             }
 
-            header .nav-links {
+            .nav-links {
                 gap: 1rem;
             }
 
-            header .nav-link {
-                font-size: 0.875rem;
+            .nav-link {
+                font-size: 0.85rem;
+            }
+        }
+
+
+
+        .profile-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            display: none;
+            z-index: 1000;
+        }
+
+        .profile-modal.open {
+            display: block;
+        }
+
+        .profile-modal .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            background: rgba(15, 23, 42, 0.72);
+            backdrop-filter: blur(6px);
+        }
+
+        /* ВОТ ТУТ КЛЮЧЕВОЕ */
+        .profile-modal .modal-panel {
+            position: fixed;
+            top: 50vh;
+            top: 50dvh;
+            left: 50vw;
+            transform: translate(-50%, -50%);
+
+            width: min(1100px, 95vw);
+            max-height: 90vh;
+            max-height: 90dvh;
+            overflow: auto;
+
+            margin: 0;
+            /* важно: убрать любые margin auto/4vh */
+            background: rgba(17, 24, 39, 0.98);
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+            padding: 1.4rem 1.6rem 1.2rem;
+            color: #e5e7eb;
+        }
+
+        .profile-modal .modal-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .profile-modal .close-btn {
+            background: transparent;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            color: #e2e8f0;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+
+        .profile-modal h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .profile-modal .modal-subtitle {
+            color: #9ca3af;
+            margin-bottom: 1.1rem;
+            font-size: 0.95rem;
+        }
+
+        .profile-modal .modal-grid {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .profile-modal .card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            min-width: 320px;
+            flex: 0 0 320px;
+        }
+
+        .profile-modal .card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 0 0.8rem;
+        }
+
+        .profile-modal label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 0.35rem;
+            color: #cbd5f5;
+        }
+
+        .profile-modal input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            border-radius: 10px;
+            padding: 0.65rem 0.8rem;
+            color: #f8fafc;
+            margin-bottom: 0.8rem;
+        }
+
+        .profile-modal input[disabled] {
+            opacity: 0.6;
+        }
+
+        .profile-modal .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            background: linear-gradient(90deg, #22c55e, #16a34a);
+            color: #0f172a;
+            border: none;
+            border-radius: 10px;
+            padding: 0.6rem 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .profile-modal .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .profile-modal .btn-secondary {
+            background: rgba(148, 163, 184, 0.15);
+            color: #e2e8f0;
+        }
+
+        .profile-modal .btn-block {
+            width: 100%;
+        }
+
+        .profile-modal .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+
+        .profile-modal .muted {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        .profile-modal .step {
+            display: none;
+        }
+
+        .profile-modal .step.active {
+            display: block;
+        }
+
+        .profile-modal .status {
+            margin-top: 0.6rem;
+            font-size: 0.9rem;
+            min-height: 1.1rem;
+        }
+
+        .profile-modal .status.ok {
+            color: #86efac;
+        }
+
+        .profile-modal .status.err {
+            color: #fca5a5;
+        }
+
+        @media (max-width: 560px) {
+            .profile-modal .card {
+                min-width: 260px;
+                flex-basis: 260px;
             }
         }
     </style>
@@ -102,37 +332,393 @@
     <div class="container">
         <div>
             {% if is_dashboard %}
-                <h1>
-                    Админ-панель
-                </h1>
+            <h1 class="app-title">Главная</h1>
             {% elif is_students %}
-                <h1>
-                    База студентов
-                </h1>
+            <h1 class="app-title">База студентов</h1>
             {% elif is_events %}
-                <h1>
-                    Список мероприятий
-                </h1>
+            <h1 class="app-title">Список мероприятий</h1>
             {% elif is_system_monitor %}
-                <h1>
-                    Системный монитор
-                </h1>
+            <h1 class="app-title">Системный монитор</h1>
+            {% elif is_reg_monitor %}
+            <h1 class="app-title">Монитор регистрации</h1>
             {% endif %}
         </div>
 
         <div class="nav-links">
+            <span class="nav-user" title="{{ current_user.email }}">
+                {{ (current_user.full_name or 'Пользователь') }}
+            </span>
             {% if not is_dashboard %}
-                <a href="{{ url_for('dashboard.index') }}" class="nav-link">
-                    Главная
-                </a>
+            <a href="{{ url_for('dashboard.index') }}" class="nav-link">
+                Главная
+            </a>
             {% endif %}
+
             <a href="{{ url_for('auth.logout') }}" class="nav-link logout-link">
                 Выйти
             </a>
-            <!-- шестерня редактирования профиля -->
-            <a href="{{ url_for('auth.logout') }}" class="nav-link logout-link">
-                ⚙
+
+            <!-- сюда можно позже поставить профиль -->
+            <a href="#" class="nav-link gear-link" id="profile-gear">
+                🧑‍💻
             </a>
         </div>
     </div>
+
+
+    <div class="profile-modal" id="profile-modal" aria-hidden="true">
+        <div class="modal-backdrop" data-modal-close></div>
+        <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="profile-modal-title">
+            <div class="modal-head">
+                <h2 id="profile-modal-title">Профиль пользователя</h2>
+                <button class="close-btn" type="button" data-modal-close>&times;</button>
+            </div>
+            <div class="modal-subtitle">Здесь можно обновить имя, почту и пароль. Изменения применяются после
+                подтверждения.</div>
+
+            <div class="modal-grid">
+                <div class="card" data-card="name">
+                    <h3>Имя</h3>
+                    <form id="profile-name-form" method="POST" action="{{ url_for('auth.update_profile_name') }}">
+                        <label for="profile-full-name">Полное имя</label>
+                        <input id="profile-full-name" name="full_name" type="text"
+                            value="{{ current_user.full_name or '' }}" required>
+                        <button type="submit" class="btn btn-block">Сохранить</button>
+                    </form>
+                    <div class="status" data-status="name"></div>
+                </div>
+
+                <div class="card" data-card="email">
+                    <h3>Электронная почта</h3>
+
+                    <form id="email-step-1" class="step active">
+                        <label for="profile-new-email">Новый email</label>
+                        <input id="profile-new-email" name="new_email" type="email" placeholder="new@email.com"
+                            required>
+                        <button type="submit" class="btn btn-block">Далее</button>
+                    </form>
+
+                    <form id="email-step-2" class="step" method="POST"
+                        action="{{ url_for('auth.request_email_change_code') }}">
+                        <label for="profile-email-current-password">Текущий пароль</label>
+                        <input id="profile-email-current-password" name="current_password" type="password" required>
+                        <button type="submit" class="btn btn-block">Отправить код</button>
+                        <div class="muted">Код будет отправлен на новый email. Действителен 5 минут.</div>
+                    </form>
+
+                    <form id="email-step-3" class="step" method="POST"
+                        action="{{ url_for('auth.confirm_email_change') }}">
+                        <label for="profile-email-code">Код из письма</label>
+                        <input id="profile-email-code" name="code" type="text" inputmode="numeric" maxlength="6"
+                            required>
+                        <button type="submit" class="btn btn-secondary btn-block">Подтвердить email</button>
+                    </form>
+
+                    <div class="status" data-status="email"></div>
+                </div>
+
+                <div class="card" data-card="password">
+                    <h3>Пароль</h3>
+
+                    <form id="pass-step-1" class="step active">
+                        <label for="profile-new-password">Новый пароль</label>
+                        <input id="profile-new-password" name="new_password" type="password" required>
+                        <label for="profile-new-password2">Повторите новый пароль</label>
+                        <input id="profile-new-password2" name="new_password2" type="password" required>
+                        <button type="submit" class="btn btn-block">Далее</button>
+                    </form>
+
+                    <form id="pass-step-2" class="step" method="POST"
+                        action="{{ url_for('auth.request_password_change_code') }}">
+                        <label for="profile-current-password">Текущий пароль</label>
+                        <input id="profile-current-password" name="current_password" type="password" required>
+                        <button type="submit" class="btn btn-block">Отправить код</button>
+                        <div class="muted">Код будет отправлен на вашу почту. Действителен 5 минут.</div>
+                    </form>
+
+                    <form id="pass-step-3" class="step" method="POST"
+                        action="{{ url_for('auth.confirm_password_change') }}">
+                        <label for="profile-password-code">Код из письма</label>
+                        <input id="profile-password-code" name="code" type="text" inputmode="numeric" maxlength="6"
+                            required>
+                        <button type="submit" class="btn btn-secondary btn-block">Подтвердить пароль</button>
+                    </form>
+
+                    <div class="status" data-status="password"></div>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" data-modal-close>Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('profile-modal');
+            const openBtn = document.getElementById('profile-gear');
+            const closeButtons = modal ? modal.querySelectorAll('[data-modal-close]') : [];
+            const logoutUrl = "{{ url_for('auth.logout') }}";
+            const statusTimers = {};
+
+            const setStatus = (key, message, ok) => {
+                const el = modal ? modal.querySelector(`[data-status="${key}"]`) : null;
+                if (!el) return;
+                if (statusTimers[key]) {
+                    clearTimeout(statusTimers[key]);
+                    statusTimers[key] = null;
+                }
+                el.textContent = message || '';
+                el.classList.remove('ok', 'err');
+                if (message) {
+                    el.classList.add(ok ? 'ok' : 'err');
+                    statusTimers[key] = setTimeout(() => {
+                        setStatus(key, '', true);
+                    }, 3000);
+                }
+            };
+
+            const postForm = async (url, data, { timeoutMs = 15000 } = {}) => {
+                const body = new URLSearchParams(data);
+
+                const controller = new AbortController();
+                const t = setTimeout(() => controller.abort(), timeoutMs);
+
+                try {
+                    const resp = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body,
+                        signal: controller.signal
+                    });
+
+                    let payload = {};
+                    try {
+                        payload = await resp.json();
+                    } catch (e) {
+                        payload = { success: false, message: 'Ошибка ответа сервера (не JSON).' };
+                    }
+
+                    return { ok: resp.ok && payload.success, payload };
+                } catch (err) {
+                    const msg = (err && err.name === 'AbortError')
+                        ? 'Сервер слишком долго отвечает. Попробуйте ещё раз.'
+                        : 'Сеть/сервер недоступны. Проверьте консоль и логи сервера.';
+                    return { ok: false, payload: { success: false, message: msg } };
+                } finally {
+                    clearTimeout(t);
+                }
+            };
+
+            const withLoading = async (btn, fn) => {
+                if (!btn) return fn();
+                const oldText = btn.textContent;
+                btn.disabled = true;
+                btn.textContent = 'Отправляем...';
+                try {
+                    return await fn();
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = oldText;
+                }
+            };
+
+            modal.addEventListener('click', (e) => {
+                const panel = modal.querySelector('.modal-panel');
+                if (!panel) return;
+                if (!panel.contains(e.target)) closeModal();
+            });
+
+
+            const setStep = (group, step) => {
+                modal.querySelectorAll(`[data-card="${group}"] .step`).forEach((el) => {
+                    el.classList.toggle('active', el.id === step);
+                });
+            };
+
+            const resetFlows = () => {
+                setStep('email', 'email-step-1');
+                setStep('password', 'pass-step-1');
+                setStatus('email', '', true);
+                setStatus('password', '', true);
+                setStatus('name', '', true);
+                const resetIds = [
+                    'profile-new-email',
+                    'profile-email-current-password',
+                    'profile-email-code',
+                    'profile-new-password',
+                    'profile-new-password2',
+                    'profile-current-password',
+                    'profile-password-code'
+                ];
+                resetIds.forEach((id) => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = '';
+                });
+            };
+
+            const openModal = () => {
+                if (!modal) return;
+                modal.classList.add('open');
+                modal.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+                resetFlows();
+            };
+
+            const closeModal = () => {
+                if (!modal) return;
+                modal.classList.remove('open');
+                modal.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+                resetFlows();
+            };
+
+            if (openBtn) {
+                openBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal();
+                });
+            }
+
+            closeButtons.forEach((btn) => btn.addEventListener('click', closeModal));
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            });
+
+            const nameForm = document.getElementById('profile-name-form');
+            if (nameForm) {
+                nameForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const fullName = document.getElementById('profile-full-name').value.trim();
+                    if (!fullName) {
+                        setStatus('name', 'Имя не может быть пустым.', false);
+                        return;
+                    }
+                    const { ok, payload } = await postForm(nameForm.action, { full_name: fullName });
+                    setStatus('name', payload.message, ok);
+                });
+            }
+
+            const emailStep1 = document.getElementById('email-step-1');
+            const emailStep2 = document.getElementById('email-step-2');
+            const emailStep3 = document.getElementById('email-step-3');
+
+            let emailValue = '';
+
+            if (emailStep1) {
+                emailStep1.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const emailInput = document.getElementById('profile-new-email');
+                    emailValue = emailInput.value.trim();
+                    if (!emailValue) {
+                        setStatus('email', 'Укажите новый email.', false);
+                        return;
+                    }
+                    setStatus('email', '', true);
+                    setStep('email', 'email-step-2');
+                });
+            }
+
+            if (emailStep2) {
+                emailStep2.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const btn = emailStep2.querySelector('button[type="submit"]');
+                    await withLoading(btn, async () => {
+                        const currentPassword = document.getElementById('profile-email-current-password').value;
+                        const { ok, payload } = await postForm(emailStep2.action, {
+                            new_email: emailValue.trim().toLowerCase(),
+                            current_password: currentPassword
+                        }, { timeoutMs: 20000 });
+
+                        setStatus('email', payload.message, ok);
+                        if (ok) setStep('email', 'email-step-3');
+                    });
+                });
+            }
+
+            if (emailStep3) {
+                emailStep3.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const code = document.getElementById('profile-email-code').value.trim();
+                    const { ok, payload } = await postForm(emailStep3.action, { code });
+                    setStatus('email', payload.message, ok);
+                    if (ok && payload.logout) {
+                        setTimeout(() => {
+                            window.location.href = logoutUrl;
+                        }, 3000);
+                    }
+                });
+            }
+
+            const passStep1 = document.getElementById('pass-step-1');
+            const passStep2 = document.getElementById('pass-step-2');
+            const passStep3 = document.getElementById('pass-step-3');
+
+            let passValue = '';
+            let passValue2 = '';
+
+            if (passStep1) {
+                passStep1.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    passValue = document.getElementById('profile-new-password').value;
+                    passValue2 = document.getElementById('profile-new-password2').value;
+                    if (!passValue || !passValue2) {
+                        setStatus('password', 'Заполните оба поля пароля.', false);
+                        return;
+                    }
+                    if (passValue !== passValue2) {
+                        setStatus('password', 'Пароли не совпадают.', false);
+                        return;
+                    }
+                    setStatus('password', '', true);
+                    setStep('password', 'pass-step-2');
+                });
+            }
+
+            if (passStep2) {
+                passStep2.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const btn = passStep2.querySelector('button[type="submit"]');
+                    await withLoading(btn, async () => {
+                        const currentPassword = document.getElementById('profile-current-password').value;
+                        const { ok, payload } = await postForm(passStep2.action, {
+                            current_password: currentPassword,
+                            new_password: passValue,
+                            new_password2: passValue2
+                        }, { timeoutMs: 20000 });
+
+                        setStatus('password', payload.message, ok);
+                        if (ok) setStep('password', 'pass-step-3');
+                    });
+                });
+            }
+
+            if (passStep3) {
+                passStep3.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const code = document.getElementById('profile-password-code').value.trim();
+                    const { ok, payload } = await postForm(passStep3.action, { code });
+                    setStatus('password', payload.message, ok);
+                    if (ok && payload.logout) {
+                        setTimeout(() => {
+                            window.location.href = logoutUrl;
+                        }, 3000);
+                    }
+                });
+            }
+
+
+
+
+        });
+    </script>
+
+
 </header>

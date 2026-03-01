@@ -1,37 +1,69 @@
-<footer class="footer mt-auto py-6 text-center text-gray-400 text-sm bg-gray-900/80 backdrop-blur-md border-t border-gray-500">
-    © 2026 УИВР • <a href="https://t.me/Foggislimm" target="_blank">Яковчик Алексей Юрьевич</a> • <a href="https://soviion.github.io" target="_blank">Все права защищены</a>
-
+<footer class="app-footer">
     <style>
-        .footer {
+        .app-footer {
             width: 100%;
-            background: rgba(15, 15, 23, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-            color: #94a3b8;
-            font-size: 0.875rem;
-            padding: 1.5rem 0;
+            margin-top: auto;
+            position: relative;
+            z-index: 10;
+
+            background: linear-gradient(to top,
+                    rgba(15, 15, 23, 0.96),
+                    rgba(15, 15, 23, 0.85));
+
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+
+            border-top: 1px solid rgba(52, 211, 153, 0.15);
+            padding: 1.8rem 0;
             text-align: center;
-            margin-top: auto !important;
-            position: relative !important;
-            z-index: 10 !important;
+            font-size: 0.85rem;
+            color: #94a3b8;
         }
 
-        .footer:hover {
-            color: #cbd5e1;
-            transition: color 0.3s ease;
+        .app-footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #34d399, transparent);
+            opacity: 0.4;
         }
 
-        /* Если нужно добавить ссылки или иконки позже */
-        .footer a {
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            line-height: 1.8;
+        }
+
+        .app-footer a {
             color: #a78bfa;
             text-decoration: none;
-            transition: color 0.3s;
+            transition: all 0.25s ease;
         }
 
-        .footer a:hover {
+        .app-footer a:hover {
             color: #c084fc;
             text-decoration: underline;
         }
+
+        .footer-divider {
+            opacity: 0.4;
+            margin: 0 0.5rem;
+        }
     </style>
+
+    <div class="footer-inner">
+        © 2026 УИВР
+        <span class="footer-divider">•</span>
+        <a href="https://t.me/Foggislimm" target="_blank">
+            Яковчик Алексей Юрьевич
+        </a>
+        <span class="footer-divider">•</span>
+        <a href="https://soviion.github.io" target="_blank">
+            Все права защищены
+        </a>
+    </div>
 </footer>
