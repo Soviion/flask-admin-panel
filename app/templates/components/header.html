@@ -358,7 +358,6 @@
                 Выйти
             </a>
 
-            <!-- сюда можно позже поставить профиль -->
             <a href="#" class="nav-link gear-link" id="profile-gear">
                 🧑‍💻
             </a>
@@ -380,7 +379,7 @@
                 <div class="card" data-card="name">
                     <h3>Имя</h3>
                     <form id="profile-name-form" method="POST" action="{{ url_for('auth.update_profile_name') }}">
-                        <label for="profile-full-name">Полное имя</label>
+                        <label for="profile-full-name">Полное ФИО</label>
                         <input id="profile-full-name" name="full_name" type="text"
                             value="{{ current_user.full_name or '' }}" required>
                         <button type="submit" class="btn btn-block">Сохранить</button>

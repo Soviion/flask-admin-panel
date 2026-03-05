@@ -2,17 +2,15 @@
 
 
 
-/* main занимает всё пространство между header и footer */
 main {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 100px); /* пример: хэдер + футер ~100px, подкорректируй */
+    height: calc(100vh - 100px);
     padding: 0 1rem;
 }
 
-/* контейнер с логами растягивается на всё оставшееся место */
 .log-container {
-    flex: 1; /* занимает всё доступное место */
+    flex: 1;
     background: #0f172a;
     color: #22c55e;
     overflow-y: auto;
@@ -22,8 +20,8 @@ main {
     box-sizing: border-box;
 }
 
-/* каждая строка лога */
+
 .log-line {
-    white-space: pre-wrap; /* перенос длинных строк */
+    white-space: pre-wrap;
     margin: 0;
 }

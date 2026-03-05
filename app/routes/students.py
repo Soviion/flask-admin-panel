@@ -111,7 +111,7 @@ def api_students():
         students = []
         for row in result:
             student = row._asdict()
-            student["faculty_code"] = student["faculty"]  # сохраняем оригинальный код
+            student["faculty_code"] = student["faculty"] 
             student["faculty"] = reverse_map.get(student["faculty"], student["faculty"])
             students.append(student)
 
@@ -195,7 +195,6 @@ def update_student():
 
         if result:
             updated = dict(result._mapping)
-            # Если нужно перевести faculty в название
             updated["faculty"] = reverse_map.get(updated["faculty"], updated["faculty"])
             return jsonify({
                 "success": True, 
@@ -214,7 +213,7 @@ def update_student():
 def delete_student(telegram_id):
 
     try:
-        telegram_id = int(telegram_id)  # ← принудительно в число
+        telegram_id = int(telegram_id)  
     except ValueError:
         return jsonify({"error": "telegram_id должен быть числом"}), 400
 

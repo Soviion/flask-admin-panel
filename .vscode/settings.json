@@ -1,5 +1,6 @@
 {
     "Codegeex.Comment.LanguagePreference": "English",
     "Codegeex.Chat.LanguagePreference": "English",
-    "Codegeex.SidebarUI.LanguagePreference": "English"
+    "Codegeex.SidebarUI.LanguagePreference": "English",
+    "python-envs.defaultEnvManager": "ms-python.python:system"
 }

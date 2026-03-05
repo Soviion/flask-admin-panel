@@ -4,7 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
     <title>Вход</title>
+    <link rel="icon" href="data:image/svg+xml,
+        <svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22>
+        <text y=%22.9em%22 font-size=%2290%22>🧑‍💻</text>
+        </svg>">
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/login.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -23,35 +28,31 @@
     </div>
     {% endif %}
 
-    <div class="min-h-screen flex items-center justify-center bg-gray-50">
-        <div class="auth-box bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
-            <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Вход</h1>
-            <p class="subtitle text-center text-gray-500 mb-8">Войдите в админ-панель</p>
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="auth-box">
+            <h1>Вход</h1>
+            <p class="subtitle">Войдите в админ-панель</p>
 
             <form method="POST">
-                <div class="form-group mb-6">
-                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                <div class="form-group">
+                    <label for="email">Email</label>
                     <input type="email" name="email" id="email" value="{{ email or '' }}"
-                        class="w-full px-4 py-3 border border-gray-300 rounded-xl" placeholder="example@email.com"
-                        required>
+                        placeholder="example@email.com" required>
                 </div>
 
-                <div class="form-group mb-6">
-                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Пароль</label>
-                    <input type="password" name="password" id="password"
-                        class="w-full px-4 py-3 border border-gray-300 rounded-xl" placeholder="••••••••" required>
+                <div class="form-group">
+                    <label for="password">Пароль</label>
+                    <input type="password" name="password" id="password" placeholder="••••••••" required>
                 </div>
 
-                <button type="submit"
-                    class="btn-submit w-full bg-gradient-to-r from-indigo-600 to-indigo-700 text-white py-3.5 rounded-xl font-semibold hover:from-indigo-700 hover:to-indigo-800 transition shadow-md">
+                <button type="submit" class="btn-submit">
                     Войти
                 </button>
             </form>
 
-            <p class="switch text-center mt-6 text-gray-600">
+            <p class="switch">
                 Нет аккаунта?
-                <a href="{{ url_for('auth.register') }}"
-                    class="text-indigo-600 font-medium hover:underline">Зарегистрироваться</a>
+                <a href="{{ url_for('auth.register') }}">Зарегистрироваться</a>
             </p>
         </div>
     </div>

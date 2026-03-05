@@ -1,4 +1,4 @@
-/* static/css/confirm.css — зелёный стиль, как регистрация */
+/* static/css/confirm.css  */
 
 .min-h-screen {
     min-height: 100vh;
@@ -125,7 +125,6 @@
     text-decoration: underline;
 }
 
-/* Ошибки */
 .error-block {
     background: rgba(239, 68, 68, 0.15);
     border: 1px solid rgba(239, 68, 68, 0.4);

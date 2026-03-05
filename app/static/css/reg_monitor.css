@@ -14,7 +14,6 @@
     align-items: flex-start;
 }
 
-/* ================= TABLE ================= */
 
 .table-container {
     flex: 3;
@@ -86,7 +85,6 @@ tr:hover {
     font-style: italic;
 }
 
-/* ================= TOGGLE ================= */
 
 .toggle {
     position: relative;
@@ -128,7 +126,6 @@ tr:hover {
     transform: translateX(18px);
 }
 
-/* ================= FILTER ================= */
 
 .filter-container {
     flex: 1;
@@ -196,7 +193,6 @@ tr:hover {
     transform: translateY(-1px);
 }
 
-/* ================= RESPONSIVE ================= */
 
 @media (max-width: 1100px) {
     .layout-wrapper {

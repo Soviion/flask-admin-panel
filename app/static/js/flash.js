@@ -1,7 +1,6 @@
 // static/js/flash.js — чистый, современный, поверх всего
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Контейнер — всегда наверху
     const createContainer = () => {
         let c = document.querySelector('.flash-container');
         if (!c) {
@@ -11,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return c;
     };
-    
+
 
     const container = createContainer();
 
@@ -47,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         container.appendChild(toast);
 
-        // Появление
         toast.style.opacity = '0';
         toast.style.transform = 'translateX(20px)';
         setTimeout(() => {
@@ -56,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
             toast.style.transform = 'translateX(0)';
         }, 10);
 
-        // Исчезновение через 3.8 секунды
         setTimeout(() => {
             toast.style.opacity = '0';
             toast.style.transform = 'translateX(20px)';
@@ -64,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3800);
     }
 
-    // Ловим flash
     const flashData = document.querySelector('#flash-data');
     if (flashData) {
         try {

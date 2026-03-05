@@ -1,4 +1,4 @@
-/* login.css — тёмный glassmorphism */
+/* login.css  */
 
 .auth-box {
     width: 100%;
@@ -20,7 +20,7 @@
     margin-bottom: 0.5rem;
     color: #f1f5f9;
     background: linear-gradient(to right, #a78bfa, #c084fc);
-    background-clip: text;           /* стандартное свойство */
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }

@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash
 from app.models import AdminUser, PendingRegistration, PendingEmailChange, PendingPasswordChange
 import random
 import string
+import re
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -31,8 +32,49 @@ def _respond(message, category="success", redirect_url=None, success=True, extra
 def _is_dev_mode():
     return bool(current_app.debug or current_app.testing)
 
+def _validate_email(email: str) -> str | None:
+    if not email:
+        return "Email обязателен."
+    if len(email) > 254:
+        return "Email слишком длинный."
+    # простая базовая проверка, строгую уже сделает email-validator (если используешь в формах)
+    if "@" not in email or "." not in email.split("@")[-1]:
+        return "Некорректный email."
+    if any(ch.isspace() for ch in email):
+        return "Email не должен содержать пробелы."
+    return None
 
-# ================= LOGIN =================
+def _validate_full_name(full_name: str) -> str | None:
+    if not full_name:
+        return "ФИО обязательно."
+    full_name = full_name.strip()
+    if len(full_name) < 2:
+        return "ФИО слишком короткое."
+    if len(full_name) > 120:
+        return "ФИО слишком длинное."
+    # запретим только явные XSS-символы в имени (опционально)
+    if "<" in full_name or ">" in full_name:
+        return "ФИО содержит запрещённые символы."
+    return None
+
+def _validate_password(pw: str) -> str | None:
+    if not pw:
+        return "Пароль обязателен."
+    if len(pw) < 8:
+        return "Пароль должен быть минимум 8 символов."
+    if len(pw) > 128:
+        return "Пароль слишком длинный."
+    # запретим пробелы и управляющие символы (это реально полезно)
+    if any(ch.isspace() for ch in pw):
+        return "Пароль не должен содержать пробелы."
+    if any(ord(ch) < 32 for ch in pw):
+        return "Пароль содержит недопустимые символы."
+    # минимальная сложность (по желанию):
+    if not re.search(r"[A-Za-zА-Яа-я]", pw) or not re.search(r"\d", pw):
+        return "Пароль должен содержать буквы и цифры."
+    return None
+
+
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -61,7 +103,6 @@ def login():
     return render_template('auth/login.html')
 
 
-# ================= REGISTER =================
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -72,6 +113,17 @@ def register():
         full_name = request.form.get('full_name', '').strip()
         password = request.form.get('password')
         password2 = request.form.get('password2')
+
+        err = _validate_email(email) or _validate_full_name(full_name) or _validate_password(password)
+        if err:
+            flash(err, "danger")
+            return redirect(url_for('auth.register'))
+
+        if password != password2:
+            flash("Пароли не совпадают", "danger")
+            return redirect(url_for('auth.register'))
+        
+        
 
         if not email or not full_name or not password or not password2:
             flash("Заполните все поля", "danger")
@@ -85,7 +137,6 @@ def register():
             flash("Email уже зарегистрирован", "danger")
             return redirect(url_for('auth.register'))
 
-        # Удаляем старую заявку
         old = PendingRegistration.query.filter_by(email=email).first()
         if old:
             db.session.delete(old)
@@ -124,7 +175,6 @@ def register():
     return render_template('auth/register.html')
 
 
-# ================= CONFIRM =================
 @auth_bp.route('/confirm/<email>', methods=['GET', 'POST'])
 def confirm_code(email):
     pending = PendingRegistration.query.filter_by(email=email).first()
@@ -132,7 +182,6 @@ def confirm_code(email):
         flash("Заявка не найдена или уже обработана", "danger")
         return redirect(url_for('auth.register'))
 
-    # РџСЂРёРІРѕРґРёРј expires_at Рє aware UTC
     expires_at = pending.expires_at
     if expires_at.tzinfo is None:
         expires_at = expires_at.replace(tzinfo=timezone.utc)
@@ -154,7 +203,8 @@ def confirm_code(email):
             user = AdminUser(
                 email=pending.email,
                 full_name=pending.full_name,
-                password_hash=pending.password_hash
+                password_hash=pending.password_hash,
+                is_active=False
             )
 
             db.session.add(user)
@@ -177,7 +227,6 @@ def logout():
     return redirect(url_for('auth.login'))
 
 
-# ================= PROFILE =================
 @auth_bp.route('/profile/update-name', methods=['POST'])
 @login_required
 def update_profile_name():
