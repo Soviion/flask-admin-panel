@@ -25,6 +25,18 @@ def api_students():
     search_scholarship = request.args.get('scholarship', '').strip()
     show_unverified = request.args.get('show_unverified', 'false').lower() == 'true'
 
+    try:
+        limit = int(request.args.get('limit', 25))
+    except ValueError:
+        limit = 25
+    limit = max(1, min(limit, 100))  # защита
+
+    try:
+        offset = int(request.args.get('offset', 0))
+    except ValueError:
+        offset = 0
+    offset = max(0, offset)
+
     faculty_map = {
         "ФИБ": "FIB",
         "ФИТУ": "FITU",
@@ -39,7 +51,7 @@ def api_students():
     query = """
         SELECT
             telegram_id,
-            row_number() OVER (ORDER BY created_at ASC) AS num,
+            row_number() OVER (ORDER BY full_name ASC NULLS LAST, created_at ASC) AS num,
             username,
             full_name,
             group_number,
@@ -89,7 +101,9 @@ def api_students():
     if not show_unverified:
         query += " AND is_verified = true"
 
-    query += " LIMIT 200"
+    query += " ORDER BY full_name ASC NULLS LAST, created_at ASC LIMIT :limit OFFSET :offset"
+    params['limit'] = limit
+    params['offset'] = offset
 
     try:
         result = db.session.execute(text(query), params).fetchall()
@@ -105,9 +119,13 @@ def api_students():
             text("SELECT COUNT(*) FROM users WHERE is_verified = true")
         ).scalar()
 
+        has_more = len(students) == limit
+
         return jsonify({
             "students": students,
-            "verified_count": verified_count
+            "verified_count": verified_count,
+            "has_more": has_more,
+            "next_offset": offset + len(students)
         })
 
     except Exception as e:
