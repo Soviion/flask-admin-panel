@@ -1,6 +1,5 @@
 // students.js
 document.addEventListener('DOMContentLoaded', () => {
-<<<<<<< HEAD
     const PAGE_SIZE = 25;
 
     let offset = 0;
@@ -13,8 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // ────────────────────────────────────────────────
     // DOM
     // ────────────────────────────────────────────────
-=======
->>>>>>> 9eacfee (ren depl)
     const tableBody = document.getElementById('students-table-body');
     const verifiedCountEl = document.getElementById('verified-count');
     const searchBtn = document.getElementById('search-btn');
@@ -28,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
     sentinelRow.id = 'students-sentinel';
     sentinelRow.innerHTML = `<td colspan="12" class="px-3 py-6 text-center text-gray-500">Загрузка...</td>`;
 
-<<<<<<< HEAD
     // ────────────────────────────────────────────────
     // Helpers
     // ────────────────────────────────────────────────
@@ -43,17 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
             show_unverified: showUnverified?.checked ? 'true' : 'false',
             limit: String(PAGE_SIZE),
             offset: String(offset),
-=======
-    function loadStudents() {
-        const params = new URLSearchParams({
-            fio: document.getElementById('fio').value.trim(),
-            group: document.getElementById('group').value.trim(),
-            faculty: document.getElementById('faculty').value.trim(),
-            form: document.getElementById('form')?.value.trim() || '',
-            phone: document.getElementById('phone')?.value.trim() || '',
-            scholarship: document.getElementById('scholarship')?.value || '',
-            show_unverified: showUnverified.checked
->>>>>>> 9eacfee (ren depl)
         });
     }
 
@@ -162,7 +147,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-<<<<<<< HEAD
                 verifiedCountEl.textContent = data.verified_count ?? 0;
 
                 const list = data.students || [];
@@ -172,10 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     showEmpty();
                     ensureSentinel();
                     return;
-=======
-                while (tableBody.firstChild) {
-                    tableBody.removeChild(tableBody.firstChild);
->>>>>>> 9eacfee (ren depl)
                 }
 
                 renderRows(list);
@@ -206,7 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(sentinelRow);
     loadStudents({ reset: true });
 
-<<<<<<< HEAD
     // ────────────────────────────────────────────────
     // Filters / UI
     // ────────────────────────────────────────────────
@@ -228,21 +207,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (phone) phone.value = '';
             if (schol) schol.value = '';
             if (showUnverified) showUnverified.checked = false;
-=======
-    loadStudents();
-
-    if (searchBtn) searchBtn.onclick = loadStudents;
-
-    if (cancelBtn) {
-        cancelBtn.onclick = () => {
-            document.getElementById('fio').value = '';
-            document.getElementById('group').value = '';
-            document.getElementById('faculty').value = '';
-            document.getElementById('form').value = '';
-            document.getElementById('phone').value = '';
-            document.getElementById('scholarship').value = '';
-            showUnverified.checked = false;
->>>>>>> 9eacfee (ren depl)
             if (advancedFilters) advancedFilters.classList.remove('open');
 
             loadStudents({ reset: true });
@@ -269,6 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Валидация ввода ФИО (только буквы)
     const fioInput = document.getElementById('fio');
     if (fioInput) {
         fioInput.addEventListener('input', () => {
@@ -276,6 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Валидация группы (только цифры, макс 6)
     const groupInput = document.getElementById('group');
     if (groupInput) {
         groupInput.addEventListener('input', () => {
@@ -283,6 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Телефон — автодополнение +375 и только цифры
     const phoneInput = document.getElementById('phone');
     if (phoneInput) {
         phoneInput.addEventListener('focus', () => {
@@ -303,12 +270,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-<<<<<<< HEAD
     // ────────────────────────────────────────────────
     // Modal actions (оставил твою логику, но refresh делаем reset=true)
     // ────────────────────────────────────────────────
-=======
->>>>>>> 9eacfee (ren depl)
     document.addEventListener('click', (e) => {
         const modal = document.getElementById('edit-modal');
         if (!modal) return;
@@ -331,26 +295,17 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-<<<<<<< HEAD
         if (
             e.target.id === 'close-modal' ||
             e.target.closest('#close-modal') ||
             (!modal.classList.contains('hidden') && !e.target.closest('.modal-content'))
         ) {
-=======
-        if (e.target.id === 'close-modal' || e.target.closest('#close-modal') ||
-            (!modal.classList.contains('hidden') && !e.target.closest('.modal-content'))) {
->>>>>>> 9eacfee (ren depl)
             modal.classList.add('hidden');
             return;
         }
 
         if (e.target.id === 'save-btn') {
             const telegramIdStr = document.getElementById('edit-telegram-id').value.trim();
-<<<<<<< HEAD
-=======
-
->>>>>>> 9eacfee (ren depl)
             if (!telegramIdStr || isNaN(Number(telegramIdStr))) {
                 alert('Ошибка: Telegram ID не найден или неверный');
                 return;
@@ -370,11 +325,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 mobile_number: document.getElementById('edit-phone').value.trim() || null
             };
 
-<<<<<<< HEAD
-=======
-            console.log('Отправляем данные:', data);
-
->>>>>>> 9eacfee (ren depl)
             if (!confirm('Сохранить изменения?')) return;
 
             fetch('/api/students/update', {
@@ -384,44 +334,15 @@ document.addEventListener('DOMContentLoaded', () => {
             })
                 .then(res => res.json())
                 .then(res => {
-<<<<<<< HEAD
                     if (res.success) {
                         modal.classList.add('hidden');
                         alert('Изменения сохранены!');
                         loadStudents({ reset: true }); // ✅ чтобы заново с 25 и с фильтрами
-=======
-                    console.log('Ответ сервера:', res);
-                    if (res.success) {
-                        const gear = document.querySelector(`.gear[data-id="${telegramId}"]`);
-                        if (gear) {
-                            const row = gear.closest('tr');
-                            row.querySelector('td:nth-child(2)').textContent = res.student.username || '—';
-                            row.querySelector('td:nth-child(3)').textContent = res.student.full_name || '—';
-                            row.querySelector('td:nth-child(4)').textContent = res.student.group_number || '—';
-                            row.querySelector('td:nth-child(5)').textContent = res.student.stud_number || '—';
-                            row.querySelector('td:nth-child(6)').textContent = res.student.faculty || '—';
-                            row.querySelector('td:nth-child(7)').textContent = res.student.form_educ || '—';
-                            row.querySelector('td:nth-child(8)').textContent = res.student.scholarship ? 'Да' : 'Нет';
-                            row.querySelector('td:nth-child(9)').textContent = res.student.mobile_number || '—';
-                            row.querySelector('td:nth-child(11)').textContent = new Date(res.student.updated_at).toLocaleString('ru-RU');
-                        }
-
-                        modal.classList.add('hidden');
-                        alert('Изменения сохранены!');
-                        loadStudents();
->>>>>>> 9eacfee (ren depl)
                     } else {
                         alert('Ошибка: ' + (res.error || 'Неизвестно'));
                     }
                 })
-<<<<<<< HEAD
                 .catch(() => alert('Ошибка соединения'));
-=======
-                .catch(err => {
-                    console.error('Ошибка fetch:', err);
-                    alert('Ошибка соединения');
-                });
->>>>>>> 9eacfee (ren depl)
 
             return;
         }
@@ -435,7 +356,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!confirm('Удалить студента? Это действие нельзя отменить.')) return;
 
-<<<<<<< HEAD
             fetch(`/api/students/${telegramId}`, { method: 'DELETE' })
                 .then(res => res.json())
                 .then(res => {
@@ -443,34 +363,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         modal.classList.add('hidden');
                         alert('Студент удалён');
                         loadStudents({ reset: true }); // ✅
-=======
-            fetch(`/api/students/${telegramId}`, {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' }
-            })
-                .then(res => {
-                    if (!res.ok) throw new Error('Ошибка сервера');
-                    return res.json();
-                })
-                .then(res => {
-                    if (res.success) {
-                        const gear = document.querySelector(`.gear[data-id="${telegramId}"]`);
-                        if (gear) gear.closest('tr').remove();
-                        modal.classList.add('hidden');
-                        alert('Студент удалён');
->>>>>>> 9eacfee (ren depl)
                     } else {
                         alert('Ошибка: ' + (res.error || 'Неизвестно'));
                     }
                 })
-<<<<<<< HEAD
                 .catch(() => alert('Ошибка удаления'));
-=======
-                .catch(err => {
-                    console.error(err);
-                    alert('Ошибка удаления');
-                });
->>>>>>> 9eacfee (ren depl)
         }
     });
 });
