@@ -5,8 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let offset = 0;
     let hasMore = true;
     let loading = false;
-
-    // чтобы отменять старые запросы при reset/быстрых кликах
     let controller = null;
 
     // ────────────────────────────────────────────────
@@ -20,21 +18,48 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleAdvanced = document.getElementById('toggle-advanced');
     const advancedFilters = document.getElementById('advanced-filters');
 
-    // sentinel внизу таблицы
+    // sentinel
     const sentinelRow = document.createElement('tr');
     sentinelRow.id = 'students-sentinel';
     sentinelRow.innerHTML = `<td colspan="12" class="px-3 py-6 text-center text-gray-500">Загрузка...</td>`;
+
+    // ────────────────────────────────────────────────
+    // Utils: find real scroll container
+    // ────────────────────────────────────────────────
+    function isScrollable(el) {
+        if (!el) return false;
+        const style = window.getComputedStyle(el);
+        const overflowY = style.overflowY;
+        if (overflowY !== 'auto' && overflowY !== 'scroll') return false;
+        return el.scrollHeight > el.clientHeight + 1;
+    }
+
+    function findScrollParent(startEl) {
+        // Ищем ближайшего родителя, который реально скроллится по Y
+        let el = startEl;
+        while (el && el !== document.body) {
+            if (isScrollable(el)) return el;
+            el = el.parentElement;
+        }
+        // иначе — скроллится окно
+        return null;
+    }
+
+    // Берём ближайшего scroll-родителя от таблицы
+    const scrollRoot = findScrollParent(tableBody);
+    // для логов
+    console.log('[students] scrollRoot =', scrollRoot ? scrollRoot.className : 'window');
 
     // ────────────────────────────────────────────────
     // Helpers
     // ────────────────────────────────────────────────
     function buildParams() {
         return new URLSearchParams({
-            fio: document.getElementById('fio')?.value.trim() || '',
-            group: document.getElementById('group')?.value.trim() || '',
-            faculty: document.getElementById('faculty')?.value.trim() || '',
-            form: document.getElementById('form')?.value.trim() || '',
-            phone: document.getElementById('phone')?.value.trim() || '',
+            fio: (document.getElementById('fio')?.value || '').trim(),
+            group: (document.getElementById('group')?.value || '').trim(),
+            faculty: (document.getElementById('faculty')?.value || '').trim(),
+            form: (document.getElementById('form')?.value || '').trim(),
+            phone: (document.getElementById('phone')?.value || '').trim(),
             scholarship: document.getElementById('scholarship')?.value || '',
             show_unverified: showUnverified?.checked ? 'true' : 'false',
             limit: String(PAGE_SIZE),
@@ -50,9 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
         clearTable();
         const emptyRow = document.createElement('tr');
         emptyRow.innerHTML = `
-      <td colspan="12" class="px-3 py-10 text-center text-gray-500 italic">
-        Нет данных
-      </td>`;
+      <td colspan="12" class="px-3 py-10 text-center text-gray-500 italic">Нет данных</td>
+    `;
         tableBody.appendChild(emptyRow);
     }
 
@@ -98,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </span>
         </td>
       `;
-            // ключевое: вставляем перед sentinel, чтобы sentinel всегда оставался последним
+            // вставляем перед sentinel, чтобы sentinel был всегда внизу
             tableBody.insertBefore(row, sentinelRow);
         });
     }
@@ -107,16 +131,30 @@ document.addEventListener('DOMContentLoaded', () => {
     // Infinite loader
     // ────────────────────────────────────────────────
     const observer = new IntersectionObserver(([entry]) => {
+        // Логи — чтобы понять, работает ли вообще observer
+        // (уберёшь потом)
+        // console.log('[students] observer', entry.isIntersecting, 'loading=', loading, 'hasMore=', hasMore);
+
         if (!entry.isIntersecting) return;
         if (loading || !hasMore) return;
         loadStudents({ reset: false });
-    }, { root: null, rootMargin: '300px 0px', threshold: 0 });
+    }, {
+        root: scrollRoot,          // null => window
+        rootMargin: '300px 0px',
+        threshold: 0
+    });
+
+    function observeSentinel() {
+        observer.disconnect();
+        if (hasMore && sentinelRow.style.display !== 'none') {
+            observer.observe(sentinelRow);
+        }
+    }
 
     function loadStudents({ reset = false } = {}) {
         if (loading && !reset) return;
 
         if (reset) {
-            // отменяем предыдущий запрос (если был)
             controller?.abort();
             controller = new AbortController();
 
@@ -126,15 +164,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             clearTable();
             ensureSentinel();
-
-            observer.disconnect();
-            observer.observe(sentinelRow);
+            observeSentinel();
         }
 
         if (loading || !hasMore) return;
         loading = true;
 
         const params = buildParams();
+
+        // Лог — чтобы ты видел, что реально уходит запрос
+        console.log('[students] GET', `/api/students?${params.toString()}`);
 
         fetch(`/api/students?${params.toString()}`, { signal: controller?.signal })
             .then(r => r.json())
@@ -144,17 +183,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     tableBody.innerHTML = `<tr><td colspan="12" class="text-red-500 text-center py-10">${data.error}</td></tr>`;
                     hasMore = false;
                     ensureSentinel();
+                    observeSentinel();
                     return;
                 }
 
                 verifiedCountEl.textContent = data.verified_count ?? 0;
-
                 const list = data.students || [];
 
                 if (reset && list.length === 0) {
                     hasMore = false;
                     showEmpty();
                     ensureSentinel();
+                    observeSentinel();
                     return;
                 }
 
@@ -164,15 +204,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 hasMore = Boolean(data.has_more);
 
                 ensureSentinel();
+                observeSentinel();
             })
             .catch(err => {
-                // abort — это норма при reset
                 if (err?.name === 'AbortError') return;
-
                 clearTable();
                 tableBody.innerHTML = `<tr><td colspan="12" class="text-red-500 text-center py-10">Ошибка: ${err}</td></tr>`;
                 hasMore = false;
                 ensureSentinel();
+                observeSentinel();
             })
             .finally(() => {
                 loading = false;
@@ -183,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Init
     // ────────────────────────────────────────────────
     ensureSentinel();
-    observer.observe(sentinelRow);
+    observeSentinel();
     loadStudents({ reset: true });
 
     // ────────────────────────────────────────────────
@@ -218,9 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (toggleAdvanced && advancedFilters) {
-        toggleAdvanced.onclick = () => {
-            advancedFilters.classList.toggle('open');
-        };
+        toggleAdvanced.onclick = () => advancedFilters.classList.toggle('open');
     }
 
     const filterContainer = document.querySelector('.filter-container');
@@ -233,38 +271,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Валидация ввода ФИО (только буквы)
+    // Валидации
     const fioInput = document.getElementById('fio');
-    if (fioInput) {
-        fioInput.addEventListener('input', () => {
-            fioInput.value = fioInput.value.replace(/[0-9]/g, '');
-        });
-    }
+    if (fioInput) fioInput.addEventListener('input', () => fioInput.value = fioInput.value.replace(/[0-9]/g, ''));
 
-    // Валидация группы (только цифры, макс 6)
     const groupInput = document.getElementById('group');
-    if (groupInput) {
-        groupInput.addEventListener('input', () => {
-            groupInput.value = groupInput.value.replace(/\D/g, '').slice(0, 6);
-        });
-    }
+    if (groupInput) groupInput.addEventListener('input', () => groupInput.value = groupInput.value.replace(/\D/g, '').slice(0, 6));
 
-    // Телефон — автодополнение +375 и только цифры
     const phoneInput = document.getElementById('phone');
     if (phoneInput) {
         phoneInput.addEventListener('focus', () => {
-            if (!phoneInput.value.startsWith('+375')) {
-                phoneInput.value = '+375';
-            }
+            if (!phoneInput.value.startsWith('+375')) phoneInput.value = '+375';
         });
-
         phoneInput.addEventListener('input', () => {
             let value = phoneInput.value;
-
-            if (!value.startsWith('+375')) {
-                value = '+375' + value.replace(/\D/g, '');
-            }
-
+            if (!value.startsWith('+375')) value = '+375' + value.replace(/\D/g, '');
             const numbers = value.slice(4).replace(/\D/g, '').slice(0, 9);
             phoneInput.value = '+375' + numbers;
         });
